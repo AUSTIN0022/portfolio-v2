@@ -22,20 +22,20 @@ function usedIn(name: string) {
 export function Toolkit() {
   const [mode, setMode] = useState<'colour' | 'ink'>('colour')
   return (
-    <section className="lab-section stack" aria-labelledby="stack-h">
-      <header className="lab-sechead">
+    <section className="screen stack" aria-labelledby="stack-h">
+      <header className="screen-head">
         <span className="lab-kicker">Capabilities</span>
-        <LiquidText text="The toolkit" as="h2" className="lab-h2" />
+        <div className="stack-title">
+          <span className="seg seg--sm" role="group" aria-label="Logo colours">
+            {(['colour', 'ink'] as const).map((m) => (
+              <button key={m} type="button" aria-pressed={mode === m} onClick={() => setMode(m)}>
+                {m}
+              </button>
+            ))}
+          </span>
+          <LiquidText text="The toolkit" as="h2" className="lab-h2" />
+        </div>
       </header>
-      <div className="stack-bar">
-        <span className="seg seg--sm" role="group" aria-label="Logo colours">
-          {(['colour', 'ink'] as const).map((m) => (
-            <button key={m} type="button" aria-pressed={mode === m} onClick={() => setMode(m)}>
-              {m}
-            </button>
-          ))}
-        </span>
-      </div>
       <dl className="stack-grid" data-mode={mode}>
         {STACK.map((g) => (
           <div key={g.group}>

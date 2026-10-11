@@ -13,6 +13,12 @@ import { Toolkit } from '@/components/Toolkit'
 import { CopyEmail } from '@/components/CopyEmail'
 import { nowData } from '@/content/now'
 
+/*
+ * Every top-level section is a `.screen`: it fills exactly one viewport below
+ * the nav bar and its content is sized to fit there — down to a 13" laptop at
+ * 100% (~1470 × 650 usable) — so each section reads as one composed page.
+ */
+
 /* Each project is drawn by the figure that acts out what it does. */
 function ProjectFigure({ id, onRead }: { id: LabProject['id']; onRead: (t: string) => void }) {
   if (id === 'quizbuzz') return <Relay play intensity={0.6} onRead={onRead} />
@@ -20,22 +26,21 @@ function ProjectFigure({ id, onRead }: { id: LabProject['id']; onRead: (t: strin
   return <Branches play intensity={0.6} onRead={onRead} />
 }
 
-const FIG_NAME: Record<LabProject['id'], string> = {
-  quizbuzz: 'one request, hop by hop',
-  smartformflow: 'contacts, deduplicated',
-  prsentinel: 'a branch, reviewed',
-}
-
-function ProjectRow({ p }: { p: LabProject }) {
+function ProjectCard({ p }: { p: LabProject }) {
   const [read, setRead] = useState('')
-  const external = !!p.href?.startsWith('http')
-  const body = (
-    <>
-      <div className="work-copy">
+  return (
+    <li className="work-card">
+      <Link href={p.href!} className="work-card-link">
+        <figure className="work-card-fig">
+          <ProjectFigure id={p.id} onRead={setRead} />
+          <figcaption>
+            <span>Fig. {p.n}</span>
+            <span>{read || 'rest'}</span>
+          </figcaption>
+        </figure>
         <p className="work-meta">
           <span>{p.n}</span>
           <span>{p.kind}</span>
-          {p.years && <span>{p.years}</span>}
         </p>
         <h3 className="work-title">{p.name}</h3>
         <p className="work-summary">{p.summary}</p>
@@ -47,49 +52,21 @@ function ProjectRow({ p }: { p: LabProject }) {
             </div>
           ))}
         </dl>
-        <ul className="work-stack" aria-label="Stack">
-          {p.stack.map((s) => (
-            <li key={s}>{s}</li>
-          ))}
-        </ul>
-        <span className="work-cta" data-soon={p.href ? undefined : ''}>
-          {p.cta} {p.href && <span aria-hidden>{external ? '↗' : '→'}</span>}
+        <span className="work-cta">
+          {p.cta} <span aria-hidden>→</span>
         </span>
-      </div>
-      <figure className="work-plate">
-        <ProjectFigure id={p.id} onRead={setRead} />
-        <figcaption>
-          <span>Fig. {p.n} — {FIG_NAME[p.id]}</span>
-          <span>{read || 'rest'}</span>
-        </figcaption>
-      </figure>
-    </>
-  )
-  return (
-    <li className="work-item">
-      {p.href && external ? (
-        <a href={p.href} target="_blank" rel="noopener noreferrer" className="work-row">
-          {body}
-        </a>
-      ) : p.href ? (
-        <Link href={p.href} className="work-row">
-          {body}
-        </Link>
-      ) : (
-        <div className="work-row">{body}</div>
-      )}
+      </Link>
     </li>
   )
 }
 
-export default function LabHome() {
-  const job = EXPERIENCE[0]
+export default function Home() {
   return (
     <main className="lab">
       <LabBar />
 
-      {/* ── Cover: who, what, where, available ─────────────────── */}
-      <section className="cover">
+      {/* ── Cover: who and what ───────────────────────────────── */}
+      <section className="screen cover">
         <div className="cover-mast">
           <LiquidText text="AUSTIN" as="h1" trigger="load" delay={150} stagger={70} duration={1600} className="cover-name" />
           <span className="cover-serif">Makasare</span>
@@ -104,12 +81,10 @@ export default function LabHome() {
 
           <div className="cover-meta">
             <dl>
-              <dt>Now</dt>
-              <dd>
-                {job.role}, {job.org}
-              </dd>
-              <dt>Experience</dt>
-              <dd>1.5+ years in production</dd>
+              <dt>Builds</dt>
+              <dd>Backends, real-time systems &amp; cloud infrastructure</dd>
+              <dt>Ships</dt>
+              <dd>End to end — architecture, CI/CD, deploy, load test</dd>
               <dt>Based</dt>
               <dd>India — remote-ready</dd>
             </dl>
@@ -126,15 +101,6 @@ export default function LabHome() {
             </div>
           </div>
         </div>
-
-        <LiquidText
-          text="I build systems that don’t break."
-          as="p"
-          trigger="load"
-          delay={900}
-          stagger={22}
-          className="cover-role"
-        />
       </section>
 
       {/* ── The short version ─────────────────────────────────── */}
@@ -150,34 +116,46 @@ export default function LabHome() {
         </dl>
       </section>
 
-      {/* ── Selected work ─────────────────────────────────────── */}
-      <section id="work" className="lab-section work" aria-labelledby="work-h">
-        <header className="lab-sechead">
+      {/* ── Selected work: all three on one screen ────────────── */}
+      <section id="work" className="screen work" aria-labelledby="work-h">
+        <header className="screen-head">
           <span className="lab-kicker">Selected work · 03</span>
           <LiquidText text="What I’ve shipped" as="h2" className="lab-h2" />
         </header>
-        <ol className="work-list">
+        <ol className="work-grid">
           {PROJECTS.map((p) => (
-            <ProjectRow key={p.id} p={p} />
+            <ProjectCard key={p.id} p={p} />
           ))}
         </ol>
       </section>
 
       {/* ── Experience & education ────────────────────────────── */}
-      <section id="experience" className="lab-section exp" aria-labelledby="exp-h">
-        <header className="exp-head">
-          <span className="lab-kicker">Experience</span>
-          <LiquidText text="Where I work" as="h2" className="lab-h2" />
-        </header>
-        <div className="exp-body">
+      <section id="experience" className="screen exp" aria-labelledby="exp-h">
+        <span className="lab-kicker screen-kicker">Experience</span>
+        <div className="exp-grid">
+          <div className="exp-side">
+            <LiquidText text="Where I work" as="h2" className="lab-h2" />
+            <div className="exp-edu">
+              <span className="lab-kicker">Education</span>
+              {EDUCATION.map((ed) => (
+                <div key={ed.what} className="exp-edu-row">
+                  <strong>{ed.what}</strong>
+                  <span>
+                    {ed.where} · {ed.when}
+                  </span>
+                  <span className="exp-note">{ed.note}</span>
+                </div>
+              ))}
+            </div>
+          </div>
           {EXPERIENCE.map((e) => (
             <article key={e.org} className="exp-job">
               <header>
                 <h3>{e.role}</h3>
+                <span className="exp-when">{e.when}</span>
                 <p>
                   <strong>{e.org}</strong> — {e.where}
                 </p>
-                <span className="exp-when">{e.when}</span>
               </header>
               <ul>
                 {e.points.map((pt) => (
@@ -189,70 +167,47 @@ export default function LabHome() {
               </ul>
             </article>
           ))}
-          <div className="exp-edu">
-            <span className="lab-kicker">Education</span>
-            {EDUCATION.map((ed) => (
-              <div key={ed.what} className="exp-edu-row">
-                <strong>{ed.what}</strong>
-                <span>{ed.where}</span>
-                <span className="exp-when">{ed.when}</span>
-                <span className="exp-note">{ed.note}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* ── About & principles ────────────────────────────────── */}
-      <section id="about" className="lab-section about">
-        <div className="about-copy">
-          <span className="lab-kicker">About</span>
-          <LiquidText text="Building things that don’t break." as="h2" className="lab-h2" />
-          <p className="lab-dek">
-            I care about the unglamorous parts — the queue that never loses a job, the lock that never deadlocks.
-          </p>
-          <p className="lab-body lab-dropcap">
-            I&apos;m a backend engineer finishing an MSc in Computer Science, building production-grade systems: from
-            distributed job queues to APIs battle-tested under real concurrent load. I ship complete products —
-            architecture, infrastructure, CI/CD and deployment — and I&apos;d rather a system be boring and correct than
-            clever and fragile.
-          </p>
+      {/* ── About: who I am, and how I build ──────────────────── */}
+      <section id="about" className="screen about">
+        <span className="lab-kicker screen-kicker">About</span>
+        <div className="about-grid">
+          <VoxelCard />
+          <div className="about-copy">
+            <LiquidText text="Building things that don’t break." as="h2" className="lab-h2" />
+            <p className="about-body">
+              I&apos;m a backend engineer finishing an MSc in Computer Science. I build production systems — job queues,
+              real-time APIs, auto-scaling infrastructure — and I&apos;d rather a system be boring and correct than clever
+              and fragile.
+            </p>
+            <dl className="profile-facts">
+              <dt>Building</dt>
+              <dd>{nowData.building}</dd>
+              <dt>Reading</dt>
+              <dd>{nowData.learning}</dd>
+            </dl>
+          </div>
+          <ol className="principles">
+            {PRINCIPLES.map((p, i) => (
+              <li key={p.t}>
+                <span className="principles-n">{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3>{p.t}</h3>
+                  <p>{p.d}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
-        <ol className="principles">
-          {PRINCIPLES.map((p, i) => (
-            <li key={p.t}>
-              <span className="principles-n">{String(i + 1).padStart(2, '0')}</span>
-              <div>
-                <h3>{p.t}</h3>
-                <p>{p.d}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
       </section>
 
       {/* ── Capabilities ──────────────────────────────────────── */}
       <Toolkit />
 
-      {/* ── Currently ─────────────────────────────────────────── */}
-      <section className="lab-section contributor" aria-labelledby="now-h">
-        <VoxelCard />
-        <div className="contributor-copy">
-          <span className="lab-kicker">Currently</span>
-          <LiquidText text="Built block by block." as="h2" className="lab-h2" />
-          <dl className="profile-facts">
-            <dt>Building</dt>
-            <dd>{nowData.building}</dd>
-            <dt>Reading</dt>
-            <dd>{nowData.learning}</dd>
-            <dt>Open to</dt>
-            <dd>{nowData.status}</dd>
-          </dl>
-        </div>
-      </section>
-
       {/* ── Contact ───────────────────────────────────────────── */}
-      <section id="contact" className="lab-section contact">
+      <section id="contact" className="screen contact">
         <div className="contact-copy">
           <span className="lab-kicker">Contact</span>
           <LiquidText text="Send a request." as="h2" className="lab-h2" />

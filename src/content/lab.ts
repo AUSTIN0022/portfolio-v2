@@ -1,12 +1,25 @@
 import type { IconType } from 'react-icons'
 import { FaAws } from 'react-icons/fa'
-import { LuActivity, LuBraces, LuDatabase, LuListOrdered, LuRadioTower, LuRepeat, LuWorkflow } from 'react-icons/lu'
+import {
+  LuActivity,
+  LuBellRing,
+  LuBraces,
+  LuDatabase,
+  LuFileCode,
+  LuGitBranch,
+  LuListOrdered,
+  LuNetwork,
+  LuRadioTower,
+  LuRepeat,
+  LuWorkflow,
+} from 'react-icons/lu'
 import {
   SiDocker,
   SiExpress,
   SiFramer,
   SiGithubactions,
   SiJavascript,
+  SiK6,
   SiNextdotjs,
   SiNodedotjs,
   SiPostgresql,
@@ -186,6 +199,16 @@ export const STACK: { group: string; items: Tool[] }[] = [
       { name: 'Docker', icon: SiDocker, color: '#2496ED' },
       { name: 'GitHub Actions', icon: SiGithubactions, color: '#2088FF' },
       { name: 'CloudWatch', icon: LuActivity, color: null },
+    ],
+  },
+  {
+    group: 'Practices',
+    items: [
+      { name: 'Load testing (k6)', icon: SiK6, color: '#7D64FF' },
+      { name: 'Infrastructure as code', icon: LuFileCode, color: null },
+      { name: 'CI/CD on every merge', icon: LuGitBranch, color: null },
+      { name: 'Alerting before users notice', icon: LuBellRing, color: null },
+      { name: 'System design', icon: LuNetwork, color: null },
     ],
   },
   {

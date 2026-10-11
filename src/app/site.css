@@ -96,29 +96,32 @@ html:has(.lab) body {
 
 /* ── Cover ────────────────────────────────────────────────── */
 .cover {
-  padding: clamp(20px, 3vw, 36px) var(--lab-gutter) clamp(56px, 8vw, 120px);
-  border-bottom: 1px solid var(--lab-rule);
+  justify-content: space-between;
 }
 .cover-mast {
   position: relative;
+  /* Hug the name, so "Makasare" anchors to its end at any size. */
+  width: fit-content;
   line-height: 0.78;
 }
 .cover-name {
   margin: 0;
   font-family: var(--f-display);
   font-weight: 900;
-  font-size: clamp(96px, 25.5vw, 420px);
+  font-size: clamp(72px, min(25.5vw, 31svh), 420px);
   letter-spacing: -0.06em;
   line-height: 0.78;
   margin-left: -0.04em;
 }
 .cover-serif {
   position: absolute;
-  right: 0.5vw;
+  /* Right edge on the name's right edge, overlapping the "IN". */
+  right: -0.25em;
   bottom: -0.12em;
+  white-space: nowrap;
   font-family: var(--f-serif);
   font-style: italic;
-  font-size: clamp(40px, 8.4vw, 150px);
+  font-size: clamp(34px, min(8.4vw, 10.5svh), 150px);
   line-height: 1;
   color: var(--lab-accent);
   letter-spacing: -0.02em;
@@ -131,13 +134,13 @@ html:has(.lab) body {
   grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr);
   gap: clamp(28px, 6vw, 120px);
   align-items: end;
-  margin-top: clamp(40px, 6vw, 88px);
+  margin-top: clamp(20px, 5svh, 72px);
 }
 .cover-intro {
   margin: 0;
-  max-width: 27ch;
+  max-width: 28ch;
   font-family: var(--f-serif);
-  font-size: clamp(28px, 3vw, 46px);
+  font-size: clamp(22px, min(2.8vw, 4.6svh), 44px);
   line-height: 1.04;
   letter-spacing: -0.015em;
   opacity: 0;
@@ -224,16 +227,6 @@ html:has(.lab) body {
 .cover-cta:hover span {
   transform: translateY(3px);
 }
-.cover-role {
-  margin: clamp(48px, 7vw, 96px) 0 0;
-  font-family: var(--f-cond);
-  font-weight: 700;
-  font-size: clamp(40px, 7.2vw, 128px);
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  text-align: right;
-}
 
 .cover-ctas {
   display: flex;
@@ -315,7 +308,7 @@ html:has(.lab) body {
   margin: 0;
   font-family: var(--f-cond);
   font-weight: 700;
-  font-size: clamp(48px, 8vw, 132px);
+  font-size: clamp(36px, min(6.4vw, 10svh), 120px);
   line-height: 0.86;
   letter-spacing: -0.02em;
   text-transform: uppercase;
@@ -344,6 +337,30 @@ html:has(.lab) body {
   color: var(--lab-accent);
 }
 
+/* A section that is exactly one viewport tall below the nav bar, with its
+   content composed to fit there (down to ~1470 × 650 on a 13" laptop). */
+.lab {
+  --bar-h: 40px;
+}
+.screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100svh - var(--bar-h));
+  padding: clamp(24px, 5.5svh, 72px) var(--lab-gutter);
+  border-bottom: 1px solid var(--lab-rule);
+}
+.screen-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: clamp(16px, 3.5svh, 40px);
+}
+.screen-kicker {
+  margin-bottom: clamp(14px, 3svh, 32px);
+}
+
 /* Hairline figures, inked for paper. */
 .lab {
   --hairline-plate: #f1efe9;
@@ -355,26 +372,11 @@ html:has(.lab) body {
 }
 
 /* ── Selected work ────────────────────────────────────────── */
-.work-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--lab-ink);
-}
-.work-item {
-  border-bottom: 1px solid var(--lab-rule);
-}
-.work-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-  gap: clamp(28px, 5vw, 88px);
-  align-items: center;
-  padding: clamp(36px, 5vw, 72px) 0;
-}
+/* Shared bits (also used on case-study pages). */
 .work-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 18px;
+  gap: 6px 14px;
   margin: 0;
   font-family: var(--f-mono);
   font-size: 11px;
@@ -384,146 +386,176 @@ html:has(.lab) body {
 .work-meta span:first-child {
   color: var(--lab-accent);
 }
-.work-title {
-  margin: 16px 0 0;
-  font-family: var(--f-cond);
-  font-weight: 700;
-  font-size: clamp(56px, 7vw, 120px);
-  line-height: 0.84;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  transition: transform 0.6s var(--ease-out);
-}
-a.work-row:hover .work-title {
-  transform: translateX(12px);
-}
-.work-summary {
-  margin: 22px 0 0;
-  max-width: 46ch;
-  font-family: var(--f-serif);
-  font-size: clamp(20px, 1.8vw, 26px);
-  line-height: 1.22;
-}
 .work-outcomes {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin: 30px 0 0;
-  padding-top: 18px;
+  gap: 14px;
+  margin: 0;
+  padding-top: 14px;
   border-top: 1px solid var(--lab-rule);
-  max-width: 560px;
 }
 .work-outcomes dt {
   font-family: var(--f-cond);
   font-weight: 700;
-  font-size: clamp(30px, 2.8vw, 42px);
-  line-height: 0.9;
+  font-size: clamp(22px, min(2vw, 4svh), 36px);
+  line-height: 0.95;
 }
 .work-outcomes dd {
-  margin: 6px 0 0;
-  font-size: 13px;
-  line-height: 1.35;
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 1.3;
   color: var(--lab-mute);
-}
-.work-stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 24px 0 0;
-  padding: 0;
-  list-style: none;
-}
-.work-stack li {
-  padding: 5px 10px;
-  border: 1px solid var(--lab-rule);
-  border-radius: 999px;
-  font-family: var(--f-mono);
-  font-size: 11px;
 }
 .work-cta {
   display: inline-flex;
   gap: 8px;
-  margin-top: 28px;
   padding-bottom: 3px;
   border-bottom: 1px solid currentColor;
-  font-size: 15px;
+  font-size: 14px;
   transition: color 0.25s, gap 0.4s var(--ease-out);
 }
-a.work-row:hover .work-cta {
-  color: var(--lab-accent);
-  gap: 14px;
-}
-.work-cta[data-soon] {
-  border-bottom-style: dashed;
-  color: var(--lab-mute);
-}
-.work-plate {
+
+/* The landing's three-up grid. */
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0;
-  padding: 14px;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--lab-ink);
+}
+.work-card + .work-card {
+  border-left: 1px solid var(--lab-rule);
+}
+.work-card-link {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.6svh, 14px);
+  height: 100%;
+  padding: clamp(14px, 2.4svh, 24px) clamp(16px, 1.8vw, 28px) 0;
+}
+.work-card:first-child .work-card-link {
+  padding-left: 0;
+}
+.work-card:last-child .work-card-link {
+  padding-right: 0;
+}
+.work-card-fig {
+  margin: 0;
+  padding: 8px 10px;
   border: 1px solid var(--lab-rule);
   border-radius: 4px;
   transition: border-color 0.4s;
 }
-a.work-row:hover .work-plate {
-  border-color: var(--lab-ink);
+/* Cap the 5:4 figure by viewport height so three cards fit one screen. */
+.work-card-fig [data-hairline] {
+  width: min(100%, calc(22svh * 1.25));
+  margin-inline: auto;
 }
-.work-plate figcaption {
+.work-card-fig figcaption {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid var(--lab-rule);
+  margin-top: 4px;
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: 10px;
   text-transform: uppercase;
   color: var(--lab-mute);
 }
+.work-card .work-title {
+  margin: 0;
+  font-family: var(--f-cond);
+  font-weight: 700;
+  font-size: clamp(32px, min(3.4vw, 6.5svh), 60px);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+.work-card .work-summary {
+  margin: 0;
+  font-family: var(--f-serif);
+  font-size: clamp(16px, min(1.35vw, 2.7svh), 21px);
+  line-height: 1.22;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.work-card .work-cta {
+  align-self: flex-start;
+  margin-top: auto;
+}
+.work-card-link:hover .work-card-fig {
+  border-color: var(--lab-ink);
+}
+.work-card-link:hover .work-title,
+.work-card-link:hover .work-cta {
+  color: var(--lab-accent);
+}
+.work-card-link:hover .work-cta {
+  gap: 14px;
+}
 
 /* ── Experience ───────────────────────────────────────────── */
-.exp {
+.exp-grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
-  gap: clamp(32px, 6vw, 112px);
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.5fr);
+  gap: clamp(28px, 5vw, 96px);
   align-items: start;
 }
-.exp-head {
-  position: sticky;
-  top: 96px;
+.exp-side .lab-h2 {
+  margin: 0;
 }
-.exp-head .lab-h2 {
-  margin-top: 14px;
+.exp-edu {
+  margin-top: clamp(20px, 5svh, 56px);
+}
+.exp-edu-row {
+  display: grid;
+  gap: 2px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--lab-rule);
+  font-size: 14px;
+}
+.exp-edu-row:first-of-type {
+  margin-top: 10px;
+  border-top: 1px solid var(--lab-ink);
+}
+.exp-edu-row span {
+  color: var(--lab-mute);
+}
+.exp-note {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--lab-accent) !important;
 }
 .exp-job header {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 6px 20px;
-  padding-bottom: 20px;
+  align-items: start;
+  padding-bottom: clamp(10px, 2svh, 18px);
   border-bottom: 1px solid var(--lab-ink);
 }
 .exp-job h3 {
   margin: 0;
   font-family: var(--f-cond);
   font-weight: 700;
-  font-size: clamp(36px, 3.6vw, 56px);
-  line-height: 0.9;
+  /* Same size as the section heading beside it, so their tops line up. */
+  font-size: clamp(36px, min(6.4vw, 10svh), 120px);
+  line-height: 0.86;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
 }
 .exp-job header p {
-  grid-column: 1;
+  grid-column: 1 / -1;
   margin: 0;
-  font-size: 16px;
+  font-size: 15px;
 }
 .exp-when {
   font-family: var(--f-mono);
   font-size: 11px;
   text-transform: uppercase;
   color: var(--lab-mute);
-}
-.exp-job header .exp-when {
-  grid-column: 2;
-  grid-row: 1;
-  align-self: end;
 }
 .exp-job ul {
   list-style: none;
@@ -532,95 +564,81 @@ a.work-row:hover .work-plate {
 }
 .exp-job li {
   display: grid;
-  grid-template-columns: 130px 1fr;
-  gap: 20px;
-  padding: 18px 0;
+  grid-template-columns: 116px 1fr;
+  gap: 18px;
+  padding: clamp(7px, 1.4svh, 14px) 0;
   border-bottom: 1px solid var(--lab-rule);
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: clamp(13px, min(1.05vw, 2.2svh), 15px);
+  line-height: 1.45;
 }
 .exp-k {
   font-family: var(--f-cond);
   font-weight: 700;
-  font-size: 28px;
-  line-height: 1;
+  font-size: clamp(18px, min(1.6vw, 3.4svh), 26px);
+  line-height: 1.05;
   color: var(--lab-accent);
-}
-.exp-edu {
-  margin-top: 56px;
-}
-.exp-edu-row {
-  display: grid;
-  grid-template-columns: 1.1fr 1.4fr auto auto;
-  gap: 8px 20px;
-  align-items: baseline;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--lab-rule);
-  font-size: 15px;
-}
-.exp-edu-row:first-of-type {
-  margin-top: 14px;
-  border-top: 1px solid var(--lab-ink);
-}
-.exp-edu-row span:not(.exp-when):not(.exp-note) {
-  color: var(--lab-mute);
-}
-.exp-note {
-  font-family: var(--f-mono);
-  font-size: 12px;
 }
 
 /* ── About & principles ───────────────────────────────────── */
-.about {
+.about-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(32px, 6vw, 112px);
+  grid-template-columns: minmax(0, 0.62fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(24px, 3.6vw, 64px);
   align-items: start;
 }
+.about-grid .voxel {
+  /* The portrait shrinks with the viewport height so the row fits one screen. */
+  width: min(100%, calc(52svh * 0.8));
+}
 .about-copy .lab-h2 {
-  margin-top: 14px;
+  margin: 0;
+}
+.about-body {
+  margin: clamp(14px, 2.6svh, 24px) 0 0;
+  font-size: clamp(14px, min(1.1vw, 2.3svh), 16px);
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--lab-ink) 82%, transparent);
 }
 .principles {
   list-style: none;
   margin: 0;
   padding: 0;
   border-top: 1px solid var(--lab-ink);
-  counter-reset: p;
 }
 .principles li {
   display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 16px;
-  padding: 22px 0;
+  grid-template-columns: 36px 1fr;
+  gap: 12px;
+  padding: clamp(8px, 1.7svh, 16px) 0;
   border-bottom: 1px solid var(--lab-rule);
 }
 .principles-n {
   font-family: var(--f-mono);
-  font-size: 12px;
+  font-size: 11px;
   color: var(--lab-accent);
-  padding-top: 6px;
+  padding-top: 4px;
 }
 .principles h3 {
   margin: 0;
   font-family: var(--f-cond);
   font-weight: 700;
-  font-size: clamp(26px, 2.4vw, 36px);
+  font-size: clamp(19px, min(1.7vw, 3.5svh), 28px);
   line-height: 0.95;
   text-transform: uppercase;
 }
 .principles p {
-  margin: 8px 0 0;
+  margin: 4px 0 0;
   font-family: var(--f-serif);
-  font-size: 19px;
-  line-height: 1.25;
+  font-size: clamp(15px, min(1.2vw, 2.5svh), 18px);
+  line-height: 1.2;
   color: var(--lab-mute);
 }
 
 /* ── Capabilities ─────────────────────────────────────────── */
-.stack-bar {
+.stack-title {
   display: flex;
-  justify-content: flex-end;
-  margin: -32px 0 14px;
+  align-items: flex-end;
+  gap: 18px;
 }
 .seg.seg--sm {
   padding: 2px;
@@ -689,16 +707,16 @@ a.work-row:hover .work-plate {
 }
 .stack-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   margin: 0;
   border-top: 1px solid var(--lab-ink);
 }
 .stack-grid > div {
-  padding: 22px 24px 28px 0;
+  padding: clamp(10px, 2.2svh, 22px) 20px clamp(10px, 2.2svh, 22px) 0;
   border-bottom: 1px solid var(--lab-rule);
 }
 .stack-grid dt {
-  margin-bottom: 14px;
+  margin-bottom: clamp(6px, 1.4svh, 12px);
   font-family: var(--f-mono);
   font-size: 11px;
   text-transform: uppercase;
@@ -707,24 +725,24 @@ a.work-row:hover .work-plate {
 .stack-grid dd {
   display: flex;
   align-items: center;
-  margin: 0 0 4px;
+  margin: 0 0 2px;
   font-family: var(--f-cond);
   font-weight: 700;
-  font-size: clamp(24px, 2.2vw, 34px);
-  line-height: 1.1;
+  font-size: clamp(17px, min(1.5vw, 3.3svh), 26px);
+  line-height: 1.12;
   text-transform: uppercase;
 }
 
 /* ── Currently (facts list) ───────────────────────────────── */
 .profile-facts {
   display: grid;
-  grid-template-columns: 96px 1fr;
-  gap: 14px 20px;
-  margin: 36px 0 0;
-  padding-top: 24px;
+  grid-template-columns: 76px 1fr;
+  gap: 8px 16px;
+  margin: clamp(14px, 2.6svh, 28px) 0 0;
+  padding-top: clamp(10px, 2svh, 18px);
   border-top: 1px solid var(--lab-rule);
-  font-size: 15px;
-  line-height: 1.45;
+  font-size: clamp(13px, min(1.05vw, 2.2svh), 15px);
+  line-height: 1.4;
 }
 .profile-facts dt {
   font-family: var(--f-mono);
@@ -748,12 +766,12 @@ a.work-row:hover .work-plate {
 
 /* ── Case-study pages ─────────────────────────────────────── */
 .case-cover {
-  padding: clamp(28px, 4vw, 56px) var(--lab-gutter) clamp(56px, 8vw, 112px);
+  padding: clamp(14px, 2.6svh, 28px) var(--lab-gutter) clamp(32px, 6svh, 80px);
   border-bottom: 1px solid var(--lab-rule);
 }
 .case-back {
   display: inline-block;
-  margin-bottom: clamp(32px, 5vw, 64px);
+  margin-bottom: clamp(14px, 3svh, 28px);
   font-family: var(--f-mono);
   font-size: 11px;
   text-transform: uppercase;
@@ -764,10 +782,10 @@ a.work-row:hover .work-plate {
   color: var(--lab-accent);
 }
 .case-name {
-  margin: 14px 0 0 -0.04em;
+  margin: 10px 0 0 -0.04em;
   font-family: var(--f-display);
   font-weight: 900;
-  font-size: clamp(80px, 19vw, 320px);
+  font-size: clamp(64px, min(19vw, 26svh), 320px);
   line-height: 0.8;
   letter-spacing: -0.06em;
 }
@@ -776,14 +794,14 @@ a.work-row:hover .work-plate {
   grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr);
   gap: clamp(28px, 6vw, 120px);
   align-items: end;
-  margin-top: clamp(32px, 5vw, 72px);
+  margin-top: clamp(18px, 4svh, 56px);
 }
 .case-grid .cover-intro {
-  font-size: clamp(26px, 2.8vw, 44px);
+  font-size: clamp(22px, min(2.6vw, 4.4svh), 42px);
   max-width: 30ch;
 }
 .case-outcomes {
-  margin-top: clamp(32px, 4vw, 56px);
+  margin-top: clamp(18px, 4svh, 48px);
   max-width: 760px;
 }
 
@@ -959,22 +977,14 @@ a.work-row:hover .work-plate {
   color: var(--lab-mute);
 }
 
-/* ── Contributor (voxel card) ─────────────────────────────── */
-.contributor {
-  display: grid;
-  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
-  gap: clamp(32px, 7vw, 120px);
-  align-items: center;
-  padding-top: clamp(64px, 8vw, 120px);
-  padding-bottom: clamp(64px, 8vw, 120px);
-}
+/* ── Voxel portrait card ───────────────────────────────────── */
 .voxel {
   margin: 0;
   perspective: 900px;
 }
 .voxel-card {
   position: relative;
-  padding: 10px 10px 34px;
+  padding: 8px 8px 26px;
   background: #fbfaf6;
   border-radius: 4px;
   box-shadow:
@@ -1006,9 +1016,6 @@ a.work-row:hover .work-plate {
 }
 .voxel figcaption {
   margin-top: 18px;
-}
-.contributor-copy .lab-h2 {
-  margin-top: 14px;
 }
 
 /* ── Feature opener (paper → dark) ────────────────────────── */
@@ -1769,22 +1776,27 @@ a.work-row:hover .work-plate {
     grid-template-columns: 1fr 1fr;
   }
   .cover-grid,
-  .contributor {
-    grid-template-columns: 1fr;
-  }
-  .voxel {
-    max-width: 300px;
-  }
-  .cover-role {
-    text-align: left;
-  }
   .contact,
   .notes-grid,
-  .work-row,
-  .exp,
-  .about,
+  .work-grid,
+  .exp-grid,
+  .about-grid,
   .case-grid {
     grid-template-columns: 1fr;
+  }
+  .about-grid .voxel {
+    width: min(100%, 300px);
+  }
+  .work-card + .work-card {
+    border-left: 0;
+    border-top: 1px solid var(--lab-rule);
+  }
+  .work-card .work-card-link {
+    padding: 20px 0;
+  }
+  .stack-title {
+    flex-direction: column-reverse;
+    align-items: flex-end;
   }
   .impact-grid,
   .stack-grid {
@@ -1795,18 +1807,9 @@ a.work-row:hover .work-plate {
     padding-left: 0;
     border-left: 0;
   }
-  .exp-head {
-    position: static;
-  }
   .exp-job li {
     grid-template-columns: 1fr;
     gap: 6px;
-  }
-  .exp-edu-row {
-    grid-template-columns: 1fr auto;
-  }
-  .work-plate {
-    order: -1;
   }
   .dec {
     grid-template-columns: 1fr;

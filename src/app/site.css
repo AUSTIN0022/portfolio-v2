@@ -95,8 +95,10 @@ html:has(.lab) body {
 }
 
 /* ── Cover ────────────────────────────────────────────────── */
-.cover {
-  justify-content: space-between;
+.screen.cover {
+  /* Name at the top, then a small, fixed gap — no stretched space between. */
+  justify-content: flex-start;
+  padding-top: clamp(16px, 3.5svh, 40px);
 }
 .cover-mast {
   position: relative;
@@ -108,7 +110,7 @@ html:has(.lab) body {
   margin: 0;
   font-family: var(--f-display);
   font-weight: 900;
-  font-size: clamp(72px, min(25.5vw, 31svh), 420px);
+  font-size: clamp(72px, min(25.5vw, 50svh), 420px);
   letter-spacing: -0.06em;
   line-height: 0.78;
   margin-left: -0.04em;
@@ -134,7 +136,7 @@ html:has(.lab) body {
   grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr);
   gap: clamp(28px, 6vw, 120px);
   align-items: end;
-  margin-top: clamp(20px, 5svh, 72px);
+  margin-top: clamp(16px, 3svh, 36px);
 }
 .cover-intro {
   margin: 0;
@@ -753,15 +755,6 @@ html:has(.lab) body {
 }
 .profile-facts dd {
   margin: 0;
-}
-.contact-direct {
-  margin: 28px 0 0;
-  font-size: 15px;
-  color: var(--lab-mute);
-}
-.contact-direct a {
-  color: var(--lab-ink);
-  border-bottom: 1px solid var(--lab-accent);
 }
 
 /* ── Case-study pages ─────────────────────────────────────── */
@@ -1401,12 +1394,58 @@ html:has(.lab) body {
 }
 
 /* ── Contact / receipt ────────────────────────────────────── */
-.contact {
+.screen.contact {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
   gap: clamp(40px, 6vw, 96px);
+  align-content: center;
   align-items: start;
-  border-top: 0;
+}
+.contact-copy .lab-h2 {
+  margin-top: 10px;
+}
+.contact-copy .lab-dek {
+  margin-top: clamp(12px, 2.4svh, 22px);
+  font-size: clamp(19px, min(1.8vw, 3.4svh), 28px);
+}
+.contact-list {
+  list-style: none;
+  max-width: 620px;
+  margin: clamp(16px, 3.4svh, 32px) 0 0;
+  padding: 0;
+  border-top: 1px solid var(--lab-ink);
+}
+.contact-list li {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: clamp(8px, 1.6svh, 14px) 0;
+  border-bottom: 1px solid var(--lab-rule);
+  font-size: clamp(15px, min(1.2vw, 2.5svh), 18px);
+}
+.contact-k {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--lab-mute);
+}
+.contact-list a {
+  justify-self: start;
+  transition: color 0.2s;
+}
+.contact-list a:hover {
+  color: var(--lab-accent);
+}
+.contact-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: clamp(12px, 2.4svh, 22px) 0 0;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--lab-mute);
 }
 .rc {
   justify-self: center;
@@ -1776,7 +1815,7 @@ html:has(.lab) body {
     grid-template-columns: 1fr 1fr;
   }
   .cover-grid,
-  .contact,
+  .screen.contact,
   .notes-grid,
   .work-grid,
   .exp-grid,

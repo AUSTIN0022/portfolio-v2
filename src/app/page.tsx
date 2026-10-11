@@ -89,7 +89,7 @@ export default function Home() {
               <dd>India — remote-ready</dd>
             </dl>
             <p className="cover-status">
-              <span className="cover-dot" /> Open to SDE-2 &amp; senior backend roles
+              <span className="cover-dot" /> Open to SDE-1 full-stack &amp; backend roles
             </p>
             <div className="cover-ctas">
               <a href="#work" className="cover-cta">
@@ -114,6 +114,39 @@ export default function Home() {
             </div>
           ))}
         </dl>
+      </section>
+
+      {/* ── About: who I am, and how I build ──────────────────── */}
+      <section id="about" className="screen about">
+        <span className="lab-kicker screen-kicker">About</span>
+        <div className="about-grid">
+          <VoxelCard />
+          <div className="about-copy">
+            <LiquidText text="Building things that don’t break." as="h2" className="lab-h2" />
+            <p className="about-body">
+              I&apos;m a backend-focused full-stack engineer with an MSc and BSc in Computer Science. I build production
+              systems — job queues, real-time APIs, auto-scaling infrastructure — and I&apos;d rather a system be boring and
+              correct than clever and fragile.
+            </p>
+            <dl className="profile-facts">
+              <dt>Building</dt>
+              <dd>{nowData.building}</dd>
+              <dt>Reading</dt>
+              <dd>{nowData.learning}</dd>
+            </dl>
+          </div>
+          <ol className="principles">
+            {PRINCIPLES.map((p, i) => (
+              <li key={p.t}>
+                <span className="principles-n">{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3>{p.t}</h3>
+                  <p>{p.d}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
       </section>
 
       {/* ── Selected work: all three on one screen ────────────── */}
@@ -170,39 +203,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── About: who I am, and how I build ──────────────────── */}
-      <section id="about" className="screen about">
-        <span className="lab-kicker screen-kicker">About</span>
-        <div className="about-grid">
-          <VoxelCard />
-          <div className="about-copy">
-            <LiquidText text="Building things that don’t break." as="h2" className="lab-h2" />
-            <p className="about-body">
-              I&apos;m a backend engineer finishing an MSc in Computer Science. I build production systems — job queues,
-              real-time APIs, auto-scaling infrastructure — and I&apos;d rather a system be boring and correct than clever
-              and fragile.
-            </p>
-            <dl className="profile-facts">
-              <dt>Building</dt>
-              <dd>{nowData.building}</dd>
-              <dt>Reading</dt>
-              <dd>{nowData.learning}</dd>
-            </dl>
-          </div>
-          <ol className="principles">
-            {PRINCIPLES.map((p, i) => (
-              <li key={p.t}>
-                <span className="principles-n">{String(i + 1).padStart(2, '0')}</span>
-                <div>
-                  <h3>{p.t}</h3>
-                  <p>{p.d}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
       {/* ── Capabilities ──────────────────────────────────────── */}
       <Toolkit />
 
@@ -211,9 +211,47 @@ export default function Home() {
         <div className="contact-copy">
           <span className="lab-kicker">Contact</span>
           <LiquidText text="Send a request." as="h2" className="lab-h2" />
-          <p className="lab-dek">Press the key. Every request gets a receipt — and a reply within a day.</p>
-          <p className="contact-direct">
-            Or directly: <CopyEmail />
+          <p className="lab-dek">Hiring for backend or full-stack? Press the key for a receipt — or reach me directly.</p>
+          <ul className="contact-list">
+            <li>
+              <span className="contact-k">Email</span>
+              <CopyEmail />
+            </li>
+            <li>
+              <span className="contact-k">Talk</span>
+              <a href={LINKS.cal} target="_blank" rel="noopener noreferrer">
+                Book a call <span aria-hidden>↗</span>
+              </a>
+            </li>
+            <li>
+              <span className="contact-k">LinkedIn</span>
+              <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">
+                in/austin-makasare <span aria-hidden>↗</span>
+              </a>
+            </li>
+            <li>
+              <span className="contact-k">GitHub</span>
+              <a href={LINKS.github} target="_blank" rel="noopener noreferrer">
+                AUSTIN0022 <span aria-hidden>↗</span>
+              </a>
+            </li>
+            {LINKS.twitter && (
+              <li>
+                <span className="contact-k">X</span>
+                <a href={LINKS.twitter} target="_blank" rel="noopener noreferrer">
+                  {LINKS.twitter.replace(/^https?:\/\/(www\.)?(x|twitter)\.com\//, '@')} <span aria-hidden>↗</span>
+                </a>
+              </li>
+            )}
+            <li>
+              <span className="contact-k">Résumé</span>
+              <a href={LINKS.resume} target="_blank" rel="noopener noreferrer">
+                One page, PDF <span aria-hidden>↗</span>
+              </a>
+            </li>
+          </ul>
+          <p className="contact-note">
+            <span className="cover-dot" /> Replies within a day · IST (UTC+5:30) · open to remote
           </p>
         </div>
         <Receipt />

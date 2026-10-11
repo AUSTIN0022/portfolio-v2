@@ -17,9 +17,9 @@ function Clock() {
 }
 
 const NAV = [
+  { label: 'About', href: '/#about' },
   { label: 'Work', href: '/#work' },
   { label: 'Experience', href: '/#experience' },
-  { label: 'About', href: '/#about' },
   { label: 'Contact', href: '/#contact' },
 ]
 

@@ -44,6 +44,8 @@ export const LINKS = {
   github: 'https://github.com/AUSTIN0022',
   linkedin: 'https://www.linkedin.com/in/austin-makasare/',
   resume: '/austin-makasare-resume.pdf',
+  /** Add a handle (e.g. 'https://x.com/yourname') to show X/Twitter in Contact. */
+  twitter: '' as string,
 }
 
 export const IMPACT = [
@@ -87,25 +89,8 @@ export const PROJECTS: LabProject[] = [
     cta: 'Read the case study',
   },
   {
-    id: 'smartformflow',
-    n: '02',
-    name: 'SmartFormFlow',
-    kind: 'SaaS · Payments · Async',
-    years: '2025 – 2026',
-    summary:
-      'A multi-tenant event platform that replaced paper, spreadsheets and manual payments for a client — registrations, verified payments, certificates and reminders, run by background workers.',
-    outcomes: [
-      { n: '−35%', label: 'manual reconciliation' },
-      { n: '−40%', label: 'organiser follow-up' },
-      { n: '0', label: 'duplicate-charge incidents' },
-    ],
-    stack: ['Node.js', 'TypeScript', 'Express', 'BullMQ', 'Prisma', 'PostgreSQL', 'Next.js', 'Razorpay', 'Docker'],
-    href: '/smartformflow',
-    cta: 'Read the case study',
-  },
-  {
     id: 'prsentinel',
-    n: '03',
+    n: '02',
     name: 'PR Sentinel',
     kind: 'AI agents · GitHub App · In progress',
     years: '2026',
@@ -120,6 +105,23 @@ export const PROJECTS: LabProject[] = [
     href: '/prsentinel',
     cta: 'Read the case study',
     repo: 'https://github.com/AUSTIN0022/PR-Sentinel',
+  },
+  {
+    id: 'smartformflow',
+    n: '03',
+    name: 'SmartFormFlow',
+    kind: 'SaaS · Payments · Async',
+    years: '2025 – 2026',
+    summary:
+      'A multi-tenant event platform that replaced paper, spreadsheets and manual payments for a client — registrations, verified payments, certificates and reminders, run by background workers.',
+    outcomes: [
+      { n: '−35%', label: 'manual reconciliation' },
+      { n: '−40%', label: 'organiser follow-up' },
+      { n: '0', label: 'duplicate-charge incidents' },
+    ],
+    stack: ['Node.js', 'TypeScript', 'Express', 'BullMQ', 'Prisma', 'PostgreSQL', 'Next.js', 'Razorpay', 'Docker'],
+    href: '/smartformflow',
+    cta: 'Read the case study',
   },
 ]
 

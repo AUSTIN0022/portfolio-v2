@@ -47,7 +47,7 @@ export default function PrSentinelLab() {
         dek: 'One PR, from GitHub’s webhook to a posted review — queued, planned, inspected by two waves of agents, and filtered before it speaks.',
       }}
       decisions={PRS_DECISIONS}
-      next="quizbuzz"
+      next="smartformflow"
     />
   )
 }

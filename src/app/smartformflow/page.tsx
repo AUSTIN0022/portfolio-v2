@@ -48,7 +48,7 @@ export default function SmartFormFlowLab() {
         dek: 'One attendee, from an anonymous visit to an issued certificate — through dedup, their organiser’s own payment keys, a signed webhook and a worker that never blocks the request.',
       }}
       decisions={SFF_DECISIONS}
-      next="prsentinel"
+      next="quizbuzz"
     />
   )
 }

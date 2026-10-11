@@ -28,7 +28,7 @@ export default function QuizBuzzLab() {
         dek: 'One participant, one answer — followed from payment to certificate through every service it touches. Scroll to move the camera.',
       }}
       decisions={QUIZBUZZ_DECISIONS}
-      next="smartformflow"
+      next="prsentinel"
     />
   )
 }

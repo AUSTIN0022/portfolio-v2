@@ -30,6 +30,16 @@ export const metadata: Metadata = {
   // v2 is a public test of a redesign; keep it out of search so it doesn't
   // compete with austinmakasare.site. Flip to index once it replaces v1.
   robots: { index: false, follow: false },
+  // Link previews (chat apps, LinkedIn, Slack): the image comes from each route's opengraph-image.tsx.
+  openGraph: {
+    type: 'website',
+    siteName: 'Austin Makasare',
+    title: 'Austin Makasare — Backend-focused Full-Stack Engineer',
+    description:
+      'Real-time systems for 10,000+ concurrent users, async pipelines and auto-scaling AWS infrastructure. Case studies: QuizBuzz, PR Sentinel, SmartFormFlow.',
+    url: '/',
+  },
+  twitter: { card: 'summary_large_image' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

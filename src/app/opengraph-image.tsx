@@ -1,0 +1,9 @@
+import { homeCard, OG_SIZE, OG_TYPE } from '@/lib/og'
+
+export const alt = 'Austin Makasare — backend-focused full-stack engineer'
+export const size = OG_SIZE
+export const contentType = OG_TYPE
+
+export default function Image() {
+  return homeCard()
+}

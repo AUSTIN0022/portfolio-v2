@@ -109,7 +109,7 @@ export function Receipt() {
           className="rc-key"
           onClick={() => setPhase('printing')}
           disabled={out}
-          aria-label="Send a request and print the receipt"
+          aria-label="Send request — prints a receipt"
         >
           <span className="rc-key-face">
             {phase === 'idle' ? 'Send request' : phase === 'printing' ? 'Printing…' : '200 OK'}

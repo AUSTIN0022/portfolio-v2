@@ -16,6 +16,11 @@ html:has(.lab) body {
   --lab-mute: #6d6a63;
   --lab-rule: rgba(18, 18, 18, 0.14);
   --lab-accent: #ff4f12;
+  /* Accent as text on paper, tuned for WCAG contrast: display sizes (≥24px)
+     need 3:1, small text 4.5:1. The bright accent stays for fills, hovers
+     and anything on the dark spreads. */
+  --lab-accent-display: #f2490f;
+  --lab-accent-ink: #c83805;
   --lab-dark: #0b0b0b;
   --lab-gutter: clamp(16px, 3.2vw, 48px);
   --f-display: var(--font-hero-display), 'Geist', ui-sans-serif, system-ui, sans-serif;
@@ -125,7 +130,7 @@ html:has(.lab) body {
   font-style: italic;
   font-size: clamp(34px, min(8.4vw, 10.5svh), 150px);
   line-height: 1;
-  color: var(--lab-accent);
+  color: var(--lab-accent-display);
   letter-spacing: -0.02em;
   opacity: 0;
   animation: lab-rise 1.1s var(--ease-out) 1.1s forwards;
@@ -149,7 +154,7 @@ html:has(.lab) body {
   animation: lab-rise 1.1s var(--ease-out) 1.15s forwards;
 }
 .cover-intro em {
-  color: var(--lab-accent);
+  color: var(--lab-accent-display);
 }
 .cover-meta {
   display: flex;
@@ -336,7 +341,7 @@ html:has(.lab) body {
   font-size: 4.6em;
   line-height: 0.82;
   padding: 6px 10px 0 0;
-  color: var(--lab-accent);
+  color: var(--lab-accent-display);
 }
 
 /* A section that is exactly one viewport tall below the nav bar, with its
@@ -386,7 +391,7 @@ html:has(.lab) body {
   color: var(--lab-mute);
 }
 .work-meta span:first-child {
-  color: var(--lab-accent);
+  color: var(--lab-accent-ink);
 }
 .work-outcomes {
   display: grid;
@@ -528,7 +533,7 @@ html:has(.lab) body {
 .exp-note {
   font-family: var(--f-mono);
   font-size: 11px;
-  color: var(--lab-accent) !important;
+  color: var(--lab-accent-ink) !important;
 }
 .exp-job header {
   display: grid;
@@ -578,7 +583,7 @@ html:has(.lab) body {
   font-weight: 700;
   font-size: clamp(18px, min(1.6vw, 3.4svh), 26px);
   line-height: 1.05;
-  color: var(--lab-accent);
+  color: var(--lab-accent-display);
 }
 
 /* ── About & principles ───────────────────────────────────── */
@@ -617,7 +622,7 @@ html:has(.lab) body {
 .principles-n {
   font-family: var(--f-mono);
   font-size: 11px;
-  color: var(--lab-accent);
+  color: var(--lab-accent-ink);
   padding-top: 4px;
 }
 .principles h3 {
@@ -655,7 +660,7 @@ html:has(.lab) body {
   font-weight: 400;
   font-size: 10px;
   letter-spacing: 0.02em;
-  color: var(--lab-accent);
+  color: var(--lab-accent-ink);
   opacity: 0;
   transform: translateX(-4px);
   transition: opacity 0.25s, transform 0.35s var(--ease-out);
@@ -722,7 +727,7 @@ html:has(.lab) body {
   font-family: var(--f-mono);
   font-size: 11px;
   text-transform: uppercase;
-  color: var(--lab-accent);
+  color: var(--lab-accent-ink);
 }
 .stack-grid dd {
   display: flex;
@@ -824,7 +829,7 @@ html:has(.lab) body {
   color: var(--lab-mute);
 }
 .dec-meta > span:first-child {
-  color: var(--lab-accent);
+  color: var(--lab-accent-ink);
 }
 .dec-status {
   padding: 3px 8px;
@@ -858,7 +863,7 @@ html:has(.lab) body {
   font-weight: 700;
   font-size: clamp(26px, 2.4vw, 36px);
   line-height: 1;
-  color: var(--lab-accent);
+  color: var(--lab-accent-display);
 }
 .dec-body {
   display: grid;
@@ -1715,15 +1720,19 @@ html:has(.lab) body {
   margin: 0 0 0 -0.03em;
   font-family: var(--f-display);
   font-weight: 900;
-  font-size: 17.4vw;
+  font-size: 16.9vw; /* letters are split into spans (no kerning pairs), so a touch smaller than 17.4 */
   line-height: 0.8;
   letter-spacing: -0.06em;
+  white-space: nowrap;
   color: transparent;
   -webkit-text-stroke: 1px var(--lab-ink);
-  transition: color 0.8s var(--ease-out);
 }
-.lab-foot-name:hover {
-  color: var(--lab-ink);
+/* Each letter lifts and fills by --p (0–1), set from the pointer in Wordmark. */
+.lab-foot-name span {
+  --p: 0;
+  display: inline-block;
+  color: color-mix(in srgb, var(--lab-accent) calc(var(--p) * 100%), transparent);
+  transform: translateY(calc(var(--p) * -0.1em));
 }
 .lab-foot-row {
   display: flex;
@@ -1892,6 +1901,770 @@ html:has(.lab) body {
   .feature-hint,
   .cover-dot,
   .sj-packet .sj-packet-halo {
+    animation: none;
+  }
+}
+
+/* ── Paper grain ──────────────────────────────────────────── */
+/* A fixed, static noise layer (no animation, no blend mode), so the cream
+   reads as paper without costing anything on scroll. */
+.lab::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Progressive blur under the bar ───────────────────────── */
+/* The bar's own blur continues below it and fades out, so content slides
+   under a soft edge instead of a hard line. */
+.lab-bar::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 28px;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  mask-image: linear-gradient(to bottom, #000, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent);
+}
+
+/* ── Usability floor: focus, skip link, mobile menu ───────── */
+.lab :focus-visible {
+  outline: 2px solid var(--lab-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--lab-ink);
+  color: var(--lab-paper) !important;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  transform: translateY(-160%);
+  transition: transform 0.2s var(--ease-out);
+}
+.skip-link:focus-visible {
+  transform: none;
+}
+/* Anchored sections land just below the sticky bar, not under it. */
+.lab section[id] {
+  scroll-margin-top: var(--bar-h);
+}
+#content {
+  display: block;
+  height: 0;
+  outline: none;
+}
+
+.lab-menu-btn {
+  display: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.lab-menu {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 14px var(--lab-gutter) 32px;
+  border: 0;
+  background: var(--lab-paper);
+  color: var(--lab-ink);
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition:
+    opacity 0.3s var(--ease-out),
+    transform 0.4s var(--ease-out),
+    display 0.4s allow-discrete,
+    overlay 0.4s allow-discrete;
+}
+.lab-menu:popover-open {
+  display: flex;
+  opacity: 1;
+  transform: none;
+}
+@starting-style {
+  .lab-menu:popover-open {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+.lab-menu-close {
+  align-self: flex-end;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  color: inherit;
+  cursor: pointer;
+}
+.lab-menu ol {
+  margin: auto 0;
+  padding: 0;
+  list-style: none;
+}
+.lab-menu li {
+  border-top: 1px solid var(--lab-rule);
+}
+.lab-menu li:last-child {
+  border-bottom: 1px solid var(--lab-rule);
+}
+.lab-menu li a {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 0;
+  font-family: var(--f-cond);
+  font-weight: 700;
+  font-size: clamp(44px, 14vw, 72px);
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+.lab-menu li a span {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--lab-accent-ink);
+}
+.lab-menu p {
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+/* ── Cover rail: anchors the bottom of the first screen ───── */
+.cover-rail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: auto;
+  padding-top: clamp(16px, 3svh, 28px);
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--lab-mute);
+  opacity: 0;
+  animation: lab-rise 1s var(--ease-out) 1.6s forwards;
+}
+.cover-scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  transition: color 0.2s;
+}
+.cover-scroll-line {
+  position: relative;
+  width: 48px;
+  height: 1px;
+  overflow: hidden;
+  background: var(--lab-rule);
+}
+.cover-scroll-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--lab-ink);
+  transform: translateX(-100%);
+  animation: rail-run 2.4s var(--ease-out) 2.4s infinite;
+}
+@keyframes rail-run {
+  60%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+.cover-now {
+  text-align: right;
+  transition: color 0.2s;
+}
+.cover-now .cover-dot {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: 1px;
+}
+.cover-now strong {
+  font-weight: 400;
+  color: var(--lab-ink);
+}
+.cover-scroll:hover,
+.cover-now:hover,
+.cover-now:hover strong {
+  color: var(--lab-accent);
+}
+
+/* ── 404 ──────────────────────────────────────────────────── */
+.screen.nf {
+  justify-content: center;
+  gap: clamp(14px, 3svh, 28px);
+}
+.nf-log {
+  margin: 0;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--lab-mute);
+  word-break: break-all;
+}
+.nf-log span:first-child {
+  color: var(--lab-accent-ink);
+}
+.nf-log strong {
+  font-weight: 400;
+  color: var(--lab-ink);
+}
+.nf-code {
+  margin: 0 0 0 -0.04em;
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(120px, min(40vw, 48svh), 520px);
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+}
+.nf-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nf-links a {
+  display: inline-block;
+  padding: 10px 18px;
+  border: 1px solid var(--lab-ink);
+  border-radius: 999px;
+  font-size: 14px;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.nf-links a:hover {
+  background: var(--lab-ink);
+  color: var(--lab-paper);
+}
+
+/* ── Page transitions (React <ViewTransition>) ────────────── */
+::view-transition-group(.morph) {
+  animation-duration: 560ms;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.24, 1);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: vt-via-blur;
+}
+@keyframes vt-via-blur {
+  35% {
+    filter: blur(4px);
+  }
+}
+/* Everything else: the old page lifts away, the new one settles in. */
+::view-transition-old(root) {
+  animation: 220ms cubic-bezier(0.4, 0, 1, 1) both vt-out;
+}
+::view-transition-new(root) {
+  animation: 420ms cubic-bezier(0.22, 0.8, 0.24, 1) 120ms both vt-in;
+}
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+}
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── Odometer (impact numbers) ────────────────────────────── */
+.odo {
+  display: inline-flex;
+}
+.odo-col {
+  position: relative;
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  line-height: 1;
+  vertical-align: top;
+}
+.odo-ghost {
+  visibility: hidden;
+}
+.odo-strip {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--i) * 90ms);
+}
+.odo-strip > span {
+  height: 1em;
+}
+.odo[data-in] .odo-strip {
+  transform: translateY(calc(var(--to) * -1em));
+}
+/* Before it rolls: rest on the final digit's twin one turn up, so a static
+   render (no JS yet) still reads the right number. */
+.odo:not([data-in]) .odo-strip {
+  transform: translateY(calc((var(--to) - 10) * -1em));
+  transition: none;
+}
+.impact-grid dt {
+  line-height: 1;
+}
+
+/* ── Scroll-reveal paragraph ──────────────────────────────── */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-words span {
+      animation: words-in linear both;
+      animation-timeline: view();
+      animation-range: entry 60% cover 42%;
+    }
+  }
+}
+@keyframes words-in {
+  from {
+    opacity: 0.22;
+  }
+}
+
+/* ── Halftone portrait ────────────────────────────────────── */
+.voxel-card {
+  cursor: pointer;
+}
+.voxel-halftone {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: calc(100% - 16px);
+  aspect-ratio: 4 / 5;
+  border-radius: 2px;
+  transition:
+    opacity 0.7s var(--ease-out),
+    filter 0.7s var(--ease-out);
+}
+.voxel-card:hover .voxel-halftone,
+.voxel-card[data-dev] .voxel-halftone {
+  opacity: 0;
+  filter: blur(6px);
+}
+
+/* ── Command palette ──────────────────────────────────────── */
+.lab-k {
+  padding: 2px 7px;
+  border: 1px solid var(--lab-rule);
+  border-radius: 5px;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.lab-k:hover {
+  border-color: var(--lab-ink);
+  color: var(--lab-accent);
+}
+.palette {
+  width: min(600px, calc(100vw - 32px));
+  max-height: min(560px, calc(100svh - 120px));
+  margin: 14svh auto auto;
+  padding: 0;
+  border: 1px solid var(--lab-ink);
+  border-radius: 10px;
+  background: var(--lab-paper);
+  color: var(--lab-ink);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+.palette[open] {
+  animation: palette-in 0.28s var(--ease-out);
+}
+@keyframes palette-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+}
+.palette::backdrop {
+  background: rgba(18, 18, 18, 0.28);
+  backdrop-filter: blur(3px);
+}
+.palette-box {
+  display: flex;
+  flex-direction: column;
+  max-height: inherit;
+}
+.palette-input {
+  width: 100%;
+  padding: 18px 20px;
+  border: 0;
+  border-bottom: 1px solid var(--lab-rule);
+  background: none;
+  font-family: var(--f-serif);
+  font-size: 22px;
+  color: inherit;
+  outline: none;
+}
+.lab .palette-input:focus-visible {
+  outline: none;
+}
+.palette-input::placeholder {
+  color: var(--lab-mute);
+}
+.palette-list {
+  flex: 1;
+  margin: 0;
+  padding: 6px 8px 8px;
+  overflow-y: auto;
+  list-style: none;
+}
+.palette-group {
+  margin: 10px 12px 4px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--lab-mute);
+}
+.palette-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+.palette-item[data-active] {
+  background: var(--lab-ink);
+  color: var(--lab-paper);
+}
+.palette-hint {
+  overflow: hidden;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  opacity: 0.6;
+}
+.palette-empty {
+  padding: 18px 12px;
+  font-family: var(--f-serif);
+  font-size: 18px;
+  color: var(--lab-mute);
+}
+.palette-foot {
+  display: flex;
+  gap: 18px;
+  margin: 0;
+  padding: 10px 20px;
+  border-top: 1px solid var(--lab-rule);
+  font-family: var(--f-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--lab-mute);
+}
+
+/* ── PR Sentinel review replay ────────────────────────────── */
+.replay {
+  padding: clamp(48px, 8svh, 96px) var(--lab-gutter);
+  border-bottom: 1px solid var(--lab-rule);
+}
+.replay-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 24px;
+  align-items: end;
+  margin-bottom: clamp(18px, 3svh, 32px);
+}
+.replay-dek {
+  margin: 0;
+  max-width: 52ch;
+  justify-self: end;
+  font-family: var(--f-serif);
+  font-size: clamp(18px, 1.6vw, 24px);
+  line-height: 1.2;
+}
+.replay-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  min-height: 460px;
+  border-radius: 10px;
+  background: var(--lab-dark);
+  color: #e9e6de;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  /* Code should read as typed: no "!==" → "≢" ligatures. */
+  font-variant-ligatures: none;
+  overflow: hidden;
+}
+.replay-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(241, 239, 233, 0.1);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #8d8a84;
+}
+.replay-diff {
+  border-right: 1px solid rgba(241, 239, 233, 0.1);
+  min-width: 0;
+}
+.replay-code {
+  margin: 0;
+  padding: 10px 0;
+  list-style: none;
+  overflow-x: auto;
+}
+.replay-code li {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  line-height: 1.85;
+  transition: background 0.4s;
+}
+.replay-code li[data-kind='+'] {
+  background: rgba(34, 180, 94, 0.08);
+}
+.replay-code li[data-kind='-'] {
+  background: rgba(255, 79, 18, 0.07);
+  color: #8d8a84;
+}
+.replay-code li[data-kind='@'] {
+  color: #6f7cb0;
+}
+.replay-code li[data-flag='high'],
+.replay-code li[data-flag='medium'] {
+  background: rgba(255, 79, 18, 0.18);
+}
+.replay-ln {
+  padding-right: 12px;
+  text-align: right;
+  color: #8d8a84;
+  user-select: none;
+}
+.replay-code code {
+  font: inherit;
+  white-space: pre;
+}
+.replay-sign {
+  display: inline-block;
+  width: 2ch;
+  color: #8d8a84;
+}
+.replay-note {
+  grid-column: 2;
+  margin: 4px 16px 8px 0;
+  padding: 8px 12px;
+  border-left: 2px solid var(--lab-accent);
+  border-radius: 0 6px 6px 0;
+  background: #1a1918;
+  font-family: var(--f-sans);
+  font-size: 13px;
+  line-height: 1.45;
+  white-space: normal;
+  animation: note-in 0.5s var(--ease-out) both;
+  transition: opacity 0.6s, filter 0.6s;
+}
+.replay-note[data-sev='nit'] {
+  border-left-color: #8d8a84;
+}
+.replay-note[data-dropped] {
+  opacity: 0.3;
+  text-decoration: line-through;
+  filter: grayscale(1);
+}
+@keyframes note-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+.replay-sev {
+  margin-right: 10px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--lab-accent);
+}
+.replay-note[data-sev='nit'] .replay-sev {
+  color: #8d8a84;
+}
+.replay-trace {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.replay-trace ol {
+  flex: 1;
+  margin: 0;
+  padding: 12px 16px;
+  list-style: none;
+}
+.replay-trace li {
+  display: grid;
+  grid-template-columns: 13ch minmax(0, 1fr);
+  gap: 10px;
+  padding: 5px 0;
+  line-height: 1.5;
+  animation: trace-in 0.7s var(--ease-out) both;
+}
+@keyframes trace-in {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.replay-agent {
+  color: var(--lab-accent);
+}
+.replay-text {
+  color: #cfccc5;
+}
+.replay-trace li[data-done] .replay-text {
+  color: #22b45e;
+}
+.replay-cursor::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 13px;
+  background: #e9e6de;
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.replay-again {
+  align-self: flex-start;
+  margin: 0 16px 16px;
+  padding: 6px 12px;
+  border: 1px solid rgba(241, 239, 233, 0.25);
+  border-radius: 999px;
+  background: none;
+  font: inherit;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s, opacity 0.2s;
+}
+.replay-again:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.replay-again:not(:disabled):hover {
+  border-color: var(--lab-accent);
+}
+
+@media (max-width: 900px) {
+  /* Below 24px the tagline is "small text" and needs the deeper accent. */
+  .cover-intro em {
+    color: var(--lab-accent-ink);
+  }
+  .lab-menu-btn {
+    display: inline;
+  }
+  .lab-k {
+    display: none;
+  }
+  .replay-head,
+  .replay-panel {
+    grid-template-columns: 1fr;
+  }
+  .replay-dek {
+    justify-self: start;
+  }
+  .replay-diff {
+    border-right: 0;
+    border-bottom: 1px solid rgba(241, 239, 233, 0.1);
+  }
+  .lab-bar-right > a {
+    display: none;
+  }
+  .cover-scroll {
+    display: none;
+  }
+  .cover-now {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover-rail {
+    animation: none;
+    opacity: 1;
+  }
+  .cover-scroll-line::after {
+    animation: none;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+  .lab-menu {
+    transition: none;
+  }
+  .odo-strip,
+  .replay-note,
+  .replay-trace li,
+  .palette[open] {
+    transition: none;
     animation: none;
   }
 }

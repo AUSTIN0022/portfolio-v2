@@ -1,8 +1,8 @@
 'use client'
 
-import { Fragment } from 'react'
+import { Fragment, ViewTransition } from 'react'
 import Link from 'next/link'
-import { LiquidText } from './LiquidText'
+import { LiquidText, settleNext } from './LiquidText'
 import { SystemJourney } from './SystemJourney'
 import { FieldNotes, type FieldNote } from './FieldNotes'
 import { LabBar, LabFooter } from './Chrome'
@@ -23,6 +23,7 @@ export function CasePage({
   opener,
   decisions,
   next,
+  demo,
 }: {
   id: LabProject['id']
   meta: { k: string; v: string }[]
@@ -31,6 +32,8 @@ export function CasePage({
   opener: { title: string; dek: string }
   decisions: Decision[]
   next: LabProject['id']
+  /** An optional interactive piece shown right after the cover. */
+  demo?: React.ReactNode
 }) {
   const p = PROJECTS.find((x) => x.id === id)!
   const nx = PROJECTS.find((x) => x.id === next)!
@@ -49,17 +52,20 @@ export function CasePage({
           <span>{p.kind}</span>
           {p.years && <span>{p.years}</span>}
         </p>
-        <LiquidText
-          text={p.name.toUpperCase()}
-          as="h1"
-          trigger="load"
-          delay={100}
-          stagger={55}
-          duration={1500}
-          className="case-name"
-          // Fit the full name on one line: Geist Black runs ~0.66em per capital at this tracking.
-          style={{ fontSize: `clamp(28px, ${Math.min(19, 88 / (p.name.length * 0.66)).toFixed(2)}vw, 320px)` }}
-        />
+        <ViewTransition name={`title-${p.id}`} share="morph">
+          <LiquidText
+            text={p.name.toUpperCase()}
+            settleKey={p.id}
+            as="h1"
+            trigger="load"
+            delay={100}
+            stagger={55}
+            duration={1500}
+            className="case-name"
+            // Fit the full name on one line: Geist Black runs ~0.66em per capital at this tracking.
+            style={{ fontSize: `clamp(28px, ${Math.min(19, 88 / (p.name.length * 0.66)).toFixed(2)}vw, 320px)` }}
+          />
+        </ViewTransition>
         <div className="case-grid">
           <p className="cover-intro">{p.summary}</p>
           <div className="cover-meta">
@@ -87,6 +93,8 @@ export function CasePage({
           ))}
         </dl>
       </section>
+
+      {demo}
 
       <FieldNotes notes={notes} label={p.name} />
 
@@ -143,8 +151,10 @@ export function CasePage({
             </span>
           </a>
         ) : (
-          <Link href={nx.href!} className="case-next-link">
-            <span className="case-next-name">{nx.name}</span>
+          <Link href={nx.href!} className="case-next-link" onClick={() => settleNext(nx.id)}>
+            <ViewTransition name={`title-${nx.id}`} share="morph">
+              <span className="case-next-name">{nx.name}</span>
+            </ViewTransition>
             <span className="case-next-dek">{nx.summary}</span>
             <span className="work-cta">
               {nx.cta} <span aria-hidden>→</span>

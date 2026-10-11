@@ -1,6 +1,14 @@
 'use client'
 
-import { useEffect, useId, useRef } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
+
+/* A link whose title morphs into a LiquidText (a view transition) calls
+   settleNext(key) on click; the arriving text with that settleKey renders
+   already settled, so the pour doesn't fight the morph. */
+let pendingSettle = ''
+export const settleNext = (key: string) => {
+  pendingSettle = key
+}
 
 /**
  * LiquidText — text that pours into shape the first time it is seen.
@@ -22,6 +30,7 @@ export function LiquidText({
   duration = 1300,
   className,
   style,
+  settleKey,
 }: {
   text: string
   as?: 'span' | 'h1' | 'h2' | 'h3' | 'p'
@@ -31,12 +40,18 @@ export function LiquidText({
   duration?: number
   className?: string
   style?: React.CSSProperties
+  settleKey?: string
 }) {
   const ref = useRef<HTMLElement>(null)
+  const [settled] = useState(() => !!settleKey && pendingSettle === settleKey)
   const filterId = `liquid-${useId().replace(/:/g, '')}`
 
   useEffect(() => {
     const el = ref.current!
+    if (settled) {
+      pendingSettle = ''
+      return
+    }
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       el.dataset.state = 'done'
       return
@@ -84,7 +99,7 @@ export function LiquidText({
       io.disconnect()
       anims.forEach((a) => a.cancel())
     }
-  }, [trigger, delay, stagger, duration])
+  }, [trigger, delay, stagger, duration, settled])
 
   const words = text.split(' ')
   return (
@@ -93,7 +108,7 @@ export function LiquidText({
       className={`liquid-text ${className ?? ''}`}
       style={{ ...style, ['--liquid-filter' as string]: `url(#${filterId})` }}
       aria-label={text}
-      data-state="idle"
+      data-state={settled ? 'done' : 'idle'}
     >
       <svg width="0" height="0" aria-hidden style={{ position: 'absolute' }}>
         <filter id={filterId} x="-20%" y="-50%" width="140%" height="200%">

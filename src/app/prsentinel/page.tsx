@@ -2,6 +2,7 @@
 
 import { Branches, Hub, Patch, Plot } from '@lucasmarkes/hairline/react'
 import { CasePage } from '@/components/CasePage'
+import { ReviewReplay } from '@/components/ReviewReplay'
 import { PRS_JOURNEY } from '@/content/journeys'
 import { PRS_DECISIONS } from '@/content/decisions'
 
@@ -48,6 +49,7 @@ export default function PrSentinelLab() {
       }}
       decisions={PRS_DECISIONS}
       next="smartformflow"
+      demo={<ReviewReplay />}
     />
   )
 }

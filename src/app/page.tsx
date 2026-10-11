@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, ViewTransition } from 'react'
 import Link from 'next/link'
 import { Branches, Relay } from '@lucasmarkes/hairline/react'
-import { LiquidText } from '@/components/LiquidText'
+import { LiquidText, settleNext } from '@/components/LiquidText'
 import { Receipt } from '@/components/Receipt'
 import { CustomFigure } from '@/components/CustomFigure'
 import { VoxelCard } from '@/components/VoxelCard'
@@ -11,6 +11,8 @@ import { LabBar, LabFooter } from '@/components/Chrome'
 import { EDUCATION, EXPERIENCE, IMPACT, LINKS, PRINCIPLES, PROJECTS, type LabProject } from '@/content/lab'
 import { Toolkit } from '@/components/Toolkit'
 import { CopyEmail } from '@/components/CopyEmail'
+import { Odometer } from '@/components/Odometer'
+import { ScrollWords } from '@/components/ScrollWords'
 import { nowData } from '@/content/now'
 
 /*
@@ -30,7 +32,7 @@ function ProjectCard({ p }: { p: LabProject }) {
   const [read, setRead] = useState('')
   return (
     <li className="work-card">
-      <Link href={p.href!} className="work-card-link">
+      <Link href={p.href!} className="work-card-link" onClick={() => settleNext(p.id)}>
         <figure className="work-card-fig">
           <ProjectFigure id={p.id} onRead={setRead} />
           <figcaption>
@@ -42,7 +44,10 @@ function ProjectCard({ p }: { p: LabProject }) {
           <span>{p.n}</span>
           <span>{p.kind}</span>
         </p>
-        <h3 className="work-title">{p.name}</h3>
+        {/* Morphs into the case-study cover title on navigation. */}
+        <ViewTransition name={`title-${p.id}`} share="morph">
+          <h3 className="work-title">{p.name}</h3>
+        </ViewTransition>
         <p className="work-summary">{p.summary}</p>
         <dl className="work-outcomes">
           {p.outcomes.map((o) => (
@@ -101,6 +106,18 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Anchors the bottom of the first screen. */}
+        <div className="cover-rail">
+          <a href="#about" className="cover-scroll">
+            <span className="cover-scroll-line" aria-hidden />
+            Scroll
+          </a>
+          <Link href="/prsentinel" className="cover-now" onClick={() => settleNext('prsentinel')}>
+            <span className="cover-dot" /> Now building <strong>PR Sentinel</strong> — an AI pull-request reviewer{' '}
+            <span aria-hidden>→</span>
+          </Link>
+        </div>
       </section>
 
       {/* ── The short version ─────────────────────────────────── */}
@@ -109,7 +126,9 @@ export default function Home() {
         <dl className="impact-grid">
           {IMPACT.map((m) => (
             <div key={m.label}>
-              <dt>{m.n}</dt>
+              <dt>
+                <Odometer value={m.n} />
+              </dt>
               <dd>{m.label}</dd>
             </div>
           ))}
@@ -123,11 +142,10 @@ export default function Home() {
           <VoxelCard />
           <div className="about-copy">
             <LiquidText text="Building things that don’t break." as="h2" className="lab-h2" />
-            <p className="about-body">
-              I&apos;m a backend-focused full-stack engineer with an MSc and BSc in Computer Science. I build production
-              systems — job queues, real-time APIs, auto-scaling infrastructure — and I&apos;d rather a system be boring and
-              correct than clever and fragile.
-            </p>
+            <ScrollWords
+              className="about-body"
+              text="I’m a backend-focused full-stack engineer with an MSc and BSc in Computer Science. I build production systems — job queues, real-time APIs, auto-scaling infrastructure — and I’d rather a system be boring and correct than clever and fragile."
+            />
             <dl className="profile-facts">
               <dt>Building</dt>
               <dd>{nowData.building}</dd>

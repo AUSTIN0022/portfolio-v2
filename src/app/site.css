@@ -2280,14 +2280,6 @@ html:has(.lab) body {
   width: calc(100% - 16px);
   aspect-ratio: 4 / 5;
   border-radius: 2px;
-  transition:
-    opacity 0.7s var(--ease-out),
-    filter 0.7s var(--ease-out);
-}
-.voxel-card:hover .voxel-halftone,
-.voxel-card[data-dev] .voxel-halftone {
-  opacity: 0;
-  filter: blur(6px);
 }
 
 /* ── Command palette ──────────────────────────────────────── */

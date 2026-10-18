@@ -3,7 +3,9 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { LINKS } from '@/content/lab'
+import { SITE_HOST } from '@/content/site'
 import { CommandPalette } from './CommandPalette'
+import { ThemeToggle } from './ThemeToggle'
 import { Wordmark } from './Wordmark'
 
 function Clock() {
@@ -45,14 +47,7 @@ export function LabBar() {
         </nav>
         <span className="lab-bar-right">
           <Clock />
-          <button
-            type="button"
-            className="lab-k"
-            onClick={() => window.dispatchEvent(new Event('palette:open'))}
-            aria-label="Open command menu"
-          >
-            ⌘K
-          </button>
+          <ThemeToggle />
           <a href={LINKS.resume} target="_blank" rel="noopener noreferrer">
             Résumé ↗
           </a>
@@ -95,7 +90,10 @@ export function LabFooter() {
       <Wordmark text="MAKASARE" />
       <div className="lab-foot-row">
         <span>© 2026 Austin Makasare</span>
-        <span>Set in Geist, Barlow Condensed, Instrument Serif &amp; JetBrains Mono</span>
+        <span>
+          <Link href="/status">Status</Link> · <Link href="/colophon">Colophon &amp; changelog</Link> · try{' '}
+          <code>curl {SITE_HOST}</code>
+        </span>
         <span>
           <a href={LINKS.github} target="_blank" rel="noopener noreferrer">GitHub</a> ·{' '}
           <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a> ·{' '}

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { LINKS, PROJECTS } from '@/content/lab'
 import { settleNext } from './LiquidText'
 
-type Item = { group: string; label: string; hint: string; href?: string; external?: boolean; copy?: boolean; id?: string }
+type Item = { group: string; label: string; hint: string; href?: string; external?: boolean; copy?: boolean; theme?: boolean; id?: string }
 
 const ITEMS: Item[] = [
   { group: 'Go to', label: 'Front page', hint: '/', href: '/' },
@@ -20,6 +20,9 @@ const ITEMS: Item[] = [
     href: p.href!,
     id: p.id,
   })),
+  { group: 'This site', label: 'Switch light / dark', hint: 'theme', theme: true },
+  { group: 'This site', label: 'Status', hint: '/status', href: '/status' },
+  { group: 'This site', label: 'Colophon & changelog', hint: '/colophon', href: '/colophon' },
   { group: 'Reach me', label: 'Copy email address', hint: LINKS.email, copy: true },
   { group: 'Reach me', label: 'Book a call', hint: 'cal.com', href: LINKS.cal, external: true },
   { group: 'Reach me', label: 'Résumé', hint: 'PDF', href: LINKS.resume, external: true },
@@ -139,7 +142,18 @@ export function CommandPalette() {
             return (
               <li key={it.label}>
                 {head && <p className="palette-group">{head}</p>}
-                {it.copy ? (
+                {it.theme ? (
+                  <button
+                    type="button"
+                    {...props}
+                    onClick={() => {
+                      close()
+                      setTimeout(() => window.dispatchEvent(new Event('theme:toggle')), 60)
+                    }}
+                  >
+                    {body}
+                  </button>
+                ) : it.copy ? (
                   <button type="button" {...props} onClick={copy}>
                     {body}
                   </button>

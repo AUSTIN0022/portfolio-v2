@@ -226,53 +226,54 @@ export default function Home() {
 
       {/* ── Contact ───────────────────────────────────────────── */}
       <section id="contact" className="screen contact">
-        <div className="contact-copy">
-          <span className="lab-kicker">Contact</span>
-          <LiquidText text="Send a request." as="h2" className="lab-h2" />
-          <p className="lab-dek">Hiring for backend or full-stack? Press the key for a receipt — or reach me directly.</p>
-          <ul className="contact-list">
-            <li>
-              <span className="contact-k">Email</span>
-              <CopyEmail />
-            </li>
-            <li>
-              <span className="contact-k">Talk</span>
-              <a href={LINKS.cal} target="_blank" rel="noopener noreferrer">
-                Book a call <span aria-hidden>↗</span>
-              </a>
-            </li>
-            <li>
-              <span className="contact-k">LinkedIn</span>
-              <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">
-                in/austin-makasare <span aria-hidden>↗</span>
-              </a>
-            </li>
-            <li>
-              <span className="contact-k">GitHub</span>
-              <a href={LINKS.github} target="_blank" rel="noopener noreferrer">
-                AUSTIN0022 <span aria-hidden>↗</span>
-              </a>
-            </li>
-            {LINKS.twitter && (
-              <li>
-                <span className="contact-k">X</span>
-                <a href={LINKS.twitter} target="_blank" rel="noopener noreferrer">
-                  {LINKS.twitter.replace(/^https?:\/\/(www\.)?(x|twitter)\.com\//, '@')} <span aria-hidden>↗</span>
-                </a>
-              </li>
-            )}
-            <li>
-              <span className="contact-k">Résumé</span>
-              <a href={LINKS.resume} target="_blank" rel="noopener noreferrer">
-                One page, PDF <span aria-hidden>↗</span>
-              </a>
-            </li>
-          </ul>
-          <p className="contact-note">
-            <span className="cover-dot" /> Replies within a day · IST (UTC+5:30) · open to remote
-          </p>
-        </div>
-        <Receipt />
+        <Receipt
+          head={
+            <>
+              <span className="lab-kicker">Contact</span>
+              <LiquidText text="Send a request." as="h2" className="lab-h2" />
+              <p className="lab-dek">Hiring or building something? Pick a message, add your name and email, press the key.</p>
+            </>
+          }
+          foot={
+            <>
+              <ul className="contact-inline">
+                <li>
+                  <CopyEmail />
+                </li>
+                <li>
+                  <a href={LINKS.cal} target="_blank" rel="noopener noreferrer">
+                    Book a call <span aria-hidden>↗</span>
+                  </a>
+                </li>
+                <li>
+                  <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">
+                    LinkedIn <span aria-hidden>↗</span>
+                  </a>
+                </li>
+                <li>
+                  <a href={LINKS.github} target="_blank" rel="noopener noreferrer">
+                    GitHub <span aria-hidden>↗</span>
+                  </a>
+                </li>
+                {LINKS.twitter && (
+                  <li>
+                    <a href={LINKS.twitter} target="_blank" rel="noopener noreferrer">
+                      X <span aria-hidden>↗</span>
+                    </a>
+                  </li>
+                )}
+                <li>
+                  <a href={LINKS.resume} target="_blank" rel="noopener noreferrer">
+                    Résumé <span aria-hidden>↗</span>
+                  </a>
+                </li>
+              </ul>
+              <p className="contact-note">
+                <span className="cover-dot" /> Replies within a day · IST (UTC+5:30) · open to remote
+              </p>
+            </>
+          }
+        />
       </section>
 
       <LabFooter />

@@ -46,8 +46,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${cond.variable} ${mono.variable} ${sans.variable} ${display.variable} ${serif.variable}`}
     >
+      <head>
+        {/* Before first paint: the saved theme, else the system's, so there is no flash. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;if(t==='dark')document.querySelectorAll('meta[name=theme-color]').forEach(function(m){m.content='#121211'})}catch(e){}`,
+          }}
+        />
+      </head>
       <body>
         <SmoothScroll />
         {children}

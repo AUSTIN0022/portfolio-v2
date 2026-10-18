@@ -39,7 +39,7 @@ import {
  */
 
 export const LINKS = {
-  email: 'austinmakasare00@gmail.com',
+  email: 'hi.austinmakasare@gmail.com',
   cal: 'https://cal.com/austinmakasare',
   github: 'https://github.com/AUSTIN0022',
   linkedin: 'https://www.linkedin.com/in/austin-makasare/',

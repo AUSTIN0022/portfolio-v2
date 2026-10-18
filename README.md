@@ -13,7 +13,7 @@ Built with Next.js 16, React 19, Lenis, react-icons and [Hairline](https://githu
 
 ```bash
 npm install
-npm run dev   # http://localhost:3001
+npm run dev   # http://localhost:3002
 ```
 
 ## Where things live
@@ -22,3 +22,20 @@ npm run dev   # http://localhost:3001
 - `src/components/SystemJourney.tsx` — the scroll-driven architecture engine; renders any `Journey` from `journeys.ts`.
 - `src/components/CasePage.tsx` — the shared case-study template.
 - `public/figures/` — custom Hairline figures (`autoscale`, `dedupe`) and the unmodified Hairline kernel they run on.
+
+## Contact form
+
+`POST /api/contact` sends through [Resend](https://resend.com). Put these in `.env.local` (and in the host's environment):
+
+```
+RESEND_API_KEY=re_...                       # required; without it the receipt prints a 503
+CONTACT_TO=you@example.com                  # optional, defaults to the email in src/content/lab.ts
+CONTACT_FROM="Portfolio <hi@yourdomain>"    # optional; default onboarding@resend.dev only delivers to your own Resend account email
+```
+
+Each send carries an `Idempotency-Key`; a retry of a delivered message is replayed, not re-sent.
+
+## Measuring
+
+Lighthouse scores on `/status` and `/colophon` are dated, not live. Re-measure with
+`npx lighthouse@13.5.0 http://localhost:3002/ --output=json` against a production build, then update `LIGHTHOUSE` in `src/content/site.ts`.

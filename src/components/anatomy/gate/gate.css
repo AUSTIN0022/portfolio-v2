@@ -1,0 +1,361 @@
+/* The lockbox figure: site tokens in place of the kit's greys, so it sits on the page's paper. */
+.gate {
+  --anatomy-page: var(--lab-paper);
+  --anatomy-card: var(--lab-paper);
+  --anatomy-paper: var(--lab-paper);
+  --anatomy-text: var(--lab-mute);
+  --anatomy-strong: var(--lab-ink);
+  --anatomy-muted: var(--lab-mute);
+  --anatomy-lit: var(--lab-accent);
+  --anatomy-lit-top: color-mix(in srgb, var(--lab-accent) 24%, var(--lab-paper));
+  --anatomy-lit-shade: color-mix(in srgb, var(--lab-accent) 14%, var(--lab-paper));
+  --anatomy-face: color-mix(in srgb, var(--lab-ink) 4%, var(--lab-paper));
+  --anatomy-top: color-mix(in srgb, var(--lab-ink) 1.5%, var(--lab-paper));
+  --anatomy-shade-0: color-mix(in srgb, var(--lab-ink) 26%, var(--lab-paper));
+  --anatomy-shade-1: color-mix(in srgb, var(--lab-ink) 19%, var(--lab-paper));
+  --anatomy-shade-2: color-mix(in srgb, var(--lab-ink) 13%, var(--lab-paper));
+  --anatomy-shade-3: color-mix(in srgb, var(--lab-ink) 8%, var(--lab-paper));
+  --anatomy-hi: var(--lab-ink);
+  --anatomy-mid: color-mix(in srgb, var(--lab-ink) 62%, var(--lab-paper));
+  --anatomy-lo: color-mix(in srgb, var(--lab-ink) 38%, var(--lab-paper));
+  --anatomy-faint: color-mix(in srgb, var(--lab-ink) 20%, var(--lab-paper));
+  --anatomy-halo: var(--lab-ink);
+  --anatomy-halo-opacity: 0.3;
+  --anatomy-dot: var(--lab-ink);
+  --anatomy-mono: var(--f-mono);
+  --anatomy-weight: 0.6px;
+  --anatomy-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --anatomy-red: #e5484d;
+  --anatomy-green: #30a46c;
+  --anatomy-blue: #3e63dd;
+}
+.gate .iso-figure {
+  margin: 0;
+}
+.gate .iso-plate {
+  box-shadow: 0 0 0 1px var(--lab-rule);
+  background: transparent;
+  border-radius: 6px;
+}
+.gate-coil {
+  stroke-linejoin: round;
+}
+.gate-needle {
+  stroke-width: 1.1px;
+}
+.gate-shadow {
+  filter: blur(4px);
+  opacity: 0.5;
+}
+.gate code {
+  font-family: var(--f-mono);
+  font-size: 0.92em;
+}
+
+/* Section: a tall track; the figure sticks while the steps pass. */
+.gate-section {
+  padding-bottom: 0;
+}
+.gate-track {
+  height: 320svh;
+}
+.gate-stick {
+  position: sticky;
+  top: calc(var(--bar-h, 40px) + 16px);
+  display: grid;
+  grid-template-columns: minmax(230px, 0.62fr) minmax(0, 1.9fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: center;
+  min-height: calc(100svh - var(--bar-h, 40px) - 32px);
+}
+.gate-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.gate-steps li {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 0 8px;
+  padding: 14px 0 14px 14px;
+  border-left: 2px solid var(--lab-rule);
+  opacity: 0.42;
+  transition: opacity 0.4s var(--ease-out), border-color 0.4s;
+}
+.gate-steps li[data-active] {
+  opacity: 1;
+  border-left-color: var(--lab-accent);
+}
+.gate-steps li[data-past] {
+  opacity: 0.6;
+}
+.gate-n {
+  grid-row: 1 / span 2;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  padding-top: 5px;
+  color: var(--lab-accent-ink);
+}
+.gate-steps h3 {
+  margin: 0;
+  font-family: var(--f-cond);
+  font-weight: 700;
+  font-size: clamp(24px, 2.2vw, 32px);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+.gate-steps p {
+  margin: 8px 0 0;
+  font-size: 14.5px;
+  line-height: 1.5;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s var(--ease-out);
+}
+.gate-steps li[data-active] p {
+  max-height: 9em;
+}
+@media (max-width: 860px) {
+  .gate-track {
+    height: 280svh;
+  }
+  .gate-stick {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 12px;
+    min-height: 0;
+  }
+  .gate-stick .gate {
+    order: -1;
+  }
+  .gate-steps li:not([data-active]) {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gate-steps li,
+  .gate-steps p {
+    transition: none;
+  }
+}
+
+/* Dark: the contact shadow must be dark, not the (light) ink. */
+html[data-theme='dark'] .gate {
+  --anatomy-halo: #000;
+  --anatomy-halo-opacity: 0.7;
+}
+
+/* Rack figure */
+.scale-server {
+  transition: opacity 0.4s;
+}
+.scale-server[data-off='true'] {
+  opacity: 0.55;
+}
+.scale-fill {
+  fill: var(--anatomy-hi);
+  stroke: none;
+}
+.scale-led {
+  fill: var(--anatomy-hi);
+}
+.scale-server[data-off='true'] .scale-led {
+  fill: var(--anatomy-lo);
+}
+.gate--bare .iso-svg {
+  overflow: visible;
+}
+
+/* Buttons, top right under the figure's title */
+.gate:not(.gate--bare) .iso-plate {
+  padding-top: 92px;
+}
+.bench-controls {
+  position: absolute;
+  z-index: 2;
+  top: 42px;
+  right: 20px;
+  left: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.bench-controls button {
+  all: unset;
+  cursor: pointer;
+  padding: 6px 12px;
+  border: 1px solid var(--lab-rule);
+  border-radius: 999px;
+  background: var(--lab-paper);
+  font-family: var(--f-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--lab-ink);
+  transition: border-color 0.2s, background 0.2s, color 0.2s, opacity 0.2s;
+}
+.bench-controls button:hover:not(:disabled) {
+  border-color: var(--lab-ink);
+}
+.bench-controls button:active:not(:disabled) {
+  background: var(--lab-ink);
+  color: var(--lab-paper);
+}
+.bench-controls button[aria-pressed='true'] {
+  background: var(--lab-ink);
+  border-color: var(--lab-ink);
+  color: var(--lab-paper);
+}
+.bench-controls button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.bench-controls button:focus-visible {
+  outline: 2px solid var(--lab-accent);
+  outline-offset: 2px;
+}
+.bench-sound {
+  margin-left: 8px;
+}
+.gate:focus-visible {
+  outline: 1px solid var(--lab-mute);
+  outline-offset: 6px;
+}
+
+/* Colour that means something: a server's load. */
+.scale-server[data-level='ok'] .scale-led {
+  fill: #22b45e;
+}
+.scale-server[data-level='hot'] .scale-led {
+  fill: #f2a516;
+}
+.scale-server[data-level='ok'] .scale-fill {
+  fill: #22b45e;
+}
+.scale-server[data-level='hot'] .scale-fill {
+  fill: #f2a516;
+}
+.bench-hit {
+  cursor: pointer;
+}
+.bench-hit:hover {
+  filter: brightness(1.06);
+}
+
+/* A refused delivery flashes red as it hits; the recorded one turns green. */
+.gate [data-state='hit'] .gate-nose > .iso-top,
+.gate [data-state='hit'] .gate-nose > .iso-shade {
+  fill: color-mix(in srgb, #e5484d 55%, var(--anatomy-paper));
+}
+.gate [data-state='won'] .gate-nose > .iso-top,
+.gate [data-state='won'] .gate-nose > .iso-shade {
+  fill: color-mix(in srgb, #22b45e 55%, var(--anatomy-paper));
+}
+.gate .gate-nose > * {
+  transition: fill 0.25s;
+}
+
+/* Review bench: findings are red, false positives grey out, survivors take the accent. */
+.review-flag {
+  transition: opacity 0.3s;
+}
+.review-flag[data-state='found'] .review-flag-cloth > .iso-top,
+.review-flag[data-state='found'] .review-flag-cloth > .iso-shade,
+.review-flag[data-state='found'] .review-flag-cloth > .iso-fill {
+  fill: #e5484d;
+}
+.review-flag[data-state='false'] .review-flag-cloth > * {
+  fill: var(--anatomy-lo);
+}
+.review-flag[data-state='kept'] .review-flag-cloth > .iso-top,
+.review-flag[data-state='kept'] .review-flag-cloth > .iso-shade,
+.review-flag[data-state='kept'] .review-flag-cloth > .iso-fill {
+  fill: var(--lab-accent);
+}
+
+/* 19-inch rack */
+.rack-server {
+  transition: opacity 0.4s;
+}
+.rack-server[data-level='off'] .rack-led {
+  fill: var(--anatomy-faint);
+}
+.rack-led {
+  fill: var(--anatomy-lo);
+  transition: fill 0.2s;
+}
+.rack-server[data-level='ok'] .rack-led {
+  fill: #22b45e;
+}
+.rack-server[data-level='hot'] .rack-led {
+  fill: #f2a516;
+}
+.rack-server[data-blink] .rack-led {
+  fill: var(--lab-accent);
+}
+.rack-count {
+  fill: var(--anatomy-hi);
+  font-family: var(--f-mono);
+  font-weight: 600;
+}
+.rack-server[data-level='hot'] .rack-count {
+  fill: #c27a00;
+}
+.rack-wire {
+  stroke: var(--anatomy-hi);
+  stroke-width: 1.2px;
+}
+.rack-cable {
+  transition: opacity 0.35s;
+}
+.rack-packet {
+  fill: var(--lab-accent);
+  stroke: var(--lab-paper);
+  stroke-width: 0.6px;
+}
+
+/* Blade servers + front load balancer */
+.scale-count {
+  fill: var(--anatomy-hi);
+  font-family: var(--f-mono);
+  font-weight: 600;
+}
+.scale-server[data-level='hot'] .scale-count {
+  fill: #c27a00;
+}
+.scale-server[data-blink] .scale-led {
+  fill: var(--lab-accent);
+}
+.lb-cable {
+  stroke: var(--anatomy-mid);
+  stroke-width: 1.1px;
+  transition: stroke 0.3s, opacity 0.3s;
+}
+.lb-cable[data-live='true'] {
+  stroke: var(--anatomy-hi);
+}
+.lb-cable[data-live='false'] {
+  opacity: 0.45;
+}
+.lb-count {
+  fill: #22b45e;
+  font-family: var(--f-mono);
+  font-weight: 600;
+}
+.lb-port {
+  fill: var(--anatomy-faint);
+  transition: fill 0.15s;
+}
+.lb-port[data-live='true'] {
+  fill: #22b45e;
+}
+.lb-port[data-blink] {
+  fill: var(--lab-accent);
+}
+.lb-packet {
+  fill: var(--lab-accent);
+  stroke: var(--lab-paper);
+  stroke-width: 0.6px;
+}

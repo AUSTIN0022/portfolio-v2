@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { LiquidText, settleNext } from './LiquidText'
 import { SystemJourney } from './SystemJourney'
 import { FieldNotes, type FieldNote } from './FieldNotes'
+import { Decisions } from './Decisions'
 import { LabBar, LabFooter } from './Chrome'
 import { PROJECTS, type LabProject } from '@/content/lab'
 import type { Journey } from '@/content/journeys'
@@ -24,6 +25,7 @@ export function CasePage({
   decisions,
   next,
   demo,
+  mechanism,
 }: {
   id: LabProject['id']
   meta: { k: string; v: string }[]
@@ -34,6 +36,8 @@ export function CasePage({
   next: LabProject['id']
   /** An optional interactive piece shown right after the cover. */
   demo?: React.ReactNode
+  /** An optional scroll-driven Anatomy figure, shown between the architecture film and the decisions. */
+  mechanism?: React.ReactNode
 }) {
   const p = PROJECTS.find((x) => x.id === id)!
   const nx = PROJECTS.find((x) => x.id === next)!
@@ -108,36 +112,14 @@ export function CasePage({
       </section>
       <SystemJourney journey={journey} />
 
+      {mechanism}
+
       <section className="lab-section decisions" aria-label="Engineering decisions">
         <header className="lab-sechead">
           <span className="lab-kicker">Decisions &amp; challenges · {String(decisions.length).padStart(2, '0')}</span>
           <LiquidText text="The calls that mattered" as="h2" className="lab-h2" />
         </header>
-        <ol className="dec-list">
-          {decisions.map((d, i) => (
-            <li key={d.title} className="dec">
-              <div className="dec-head">
-                <p className="dec-meta">
-                  <span>{String(i + 1).padStart(2, '0')}</span>
-                  <span className="dec-status" data-status={d.status}>
-                    {d.status === 'shipped' ? 'Shipped' : 'Designed'}
-                  </span>
-                  {d.ref && <span>{d.ref}</span>}
-                </p>
-                <h3 className="dec-title">{d.title}</h3>
-                <p className="dec-metric">{d.metric}</p>
-              </div>
-              <dl className="dec-body">
-                <dt>Problem</dt>
-                <dd>{d.problem}</dd>
-                <dt>Approach</dt>
-                <dd>{d.approach}</dd>
-                <dt>Outcome</dt>
-                <dd className="dec-outcome">{d.outcome}</dd>
-              </dl>
-            </li>
-          ))}
-        </ol>
+        <Decisions items={decisions} name={id} />
       </section>
 
       <section className="lab-section case-next">

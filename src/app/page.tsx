@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, ViewTransition } from 'react'
+import { ViewTransition } from 'react'
 import Link from 'next/link'
-import { Branches, Relay } from '@lucasmarkes/hairline/react'
 import { LiquidText, settleNext } from '@/components/LiquidText'
+import { ScaleFigure } from '@/components/anatomy/scale/Scale'
+import { GateFigure } from '@/components/anatomy/gate/Gate'
+import { ReviewFigure } from '@/components/anatomy/review/Review'
 import { Receipt } from '@/components/Receipt'
-import { CustomFigure } from '@/components/CustomFigure'
 import { VoxelCard } from '@/components/VoxelCard'
 import { LabBar, LabFooter } from '@/components/Chrome'
 import { EDUCATION, EXPERIENCE, IMPACT, LINKS, PRINCIPLES, PROJECTS, type LabProject } from '@/content/lab'
@@ -21,23 +22,22 @@ import { nowData } from '@/content/now'
  * 100% (~1470 × 650 usable) — so each section reads as one composed page.
  */
 
-/* Each project is drawn by the figure that acts out what it does. */
-function ProjectFigure({ id, onRead }: { id: LabProject['id']; onRead: (t: string) => void }) {
-  if (id === 'quizbuzz') return <Relay play intensity={0.6} onRead={onRead} />
-  if (id === 'smartformflow') return <CustomFigure name="dedupe" play onRead={onRead} />
-  return <Branches play intensity={0.6} onRead={onRead} />
+/* Each project has its own bench: the rack, the review gantry, the lockbox. */
+const FIGURES: Record<LabProject['id'], { fig: React.ReactNode; cap: string }> = {
+  quizbuzz: { fig: <ScaleFigure still={0.6} bare />, cap: '8 servers, 7,500 sockets' },
+  prsentinel: { fig: <ReviewFigure still={0.3} bare />, cap: 'wave 1 of 2' },
+  smartformflow: { fig: <GateFigure still={0.5} bare />, cap: 'recorded once' },
 }
 
 function ProjectCard({ p }: { p: LabProject }) {
-  const [read, setRead] = useState('')
   return (
     <li className="work-card">
       <Link href={p.href!} className="work-card-link" onClick={() => settleNext(p.id)}>
         <figure className="work-card-fig">
-          <ProjectFigure id={p.id} onRead={setRead} />
+          {FIGURES[p.id].fig}
           <figcaption>
             <span>Fig. {p.n}</span>
-            <span>{read || 'rest'}</span>
+            <span>{FIGURES[p.id].cap}</span>
           </figcaption>
         </figure>
         <p className="work-meta">

@@ -27,7 +27,7 @@ export const LIGHTHOUSE = {
 export const STACK = [
   ['Framework', 'Next.js 16 (App Router, Turbopack), React 19, TypeScript'],
   ['Motion', 'React <ViewTransition>, CSS scroll-driven animation, the Web Animations API, Lenis for smooth scroll'],
-  ['Figures', 'Hairline kernel — the project figures are SVG drawn by a small runtime, not images'],
+  ['Figures', 'Hairline for small interactive line figures; Anatomy for the one scroll-driven machine — both are SVG drawn by code, not images'],
   ['Native first', 'Popover API for the menu, <dialog> for ⌘K, @starting-style for entrances'],
   ['Link previews', 'next/og renders one card per page at build time'],
   ['Mail', 'A route handler posts to Resend with an idempotency key'],
@@ -41,6 +41,18 @@ export const TYPE = [
 ] as const
 
 export const CHANGELOG = [
+  {
+    v: '2.5.0',
+    d: '2026-10-19',
+    t: 'Fewer figures, better ones',
+    n: [
+      'The footer name is printed as a halftone, like the portrait; the dots part around the pointer.',
+      'Decisions are an index: hover a row for a card that follows the pointer, click for the full call, filter by area.',
+      'Hairline figures cut back to where they explain something.',
+      'Every bench is playable: buttons and keys, colours that mean something, optional sound — and the home cards run on hover.',
+      'Anatomy figures, driven by scroll: a server rack that scales 1 → 8 for QuizBuzz, a lockbox that records a payment once for SmartFormFlow — and a bench for every project on the home page.'
+    ],
+  },
   {
     v: '2.4.0',
     d: '2026-10-18',

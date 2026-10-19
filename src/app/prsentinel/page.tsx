@@ -1,7 +1,8 @@
 'use client'
 
-import { Branches, Hub, Patch, Plot } from '@lucasmarkes/hairline/react'
+import { Hub } from '@lucasmarkes/hairline/react'
 import { CasePage } from '@/components/CasePage'
+import { ReviewSection } from '@/components/anatomy/review/Review'
 import { ReviewReplay } from '@/components/ReviewReplay'
 import { PRS_JOURNEY } from '@/content/journeys'
 import { PRS_DECISIONS } from '@/content/decisions'
@@ -27,19 +28,16 @@ export default function PrSentinelLab() {
           k: 'tools',
           n: '12',
           cap: 'permission-scoped tools — each agent may only call the ones its role needs.',
-          fig: (r) => <Patch play intensity={0.6} onRead={r} />,
         },
         {
           k: 'cache',
           n: '12×',
           cap: 'fewer GitHub calls per review, by caching immutable git data against the commit SHA.',
-          fig: (r) => <Branches play intensity={0.6} onRead={r} />,
         },
         {
           k: 'tests',
           n: '7 → 68',
           cap: 'tests, with webhooks verified by HMAC and tokens encrypted with AES-256-GCM.',
-          fig: (r) => <Plot play intensity={0.6} onRead={r} />,
         },
       ]}
       journey={PRS_JOURNEY}
@@ -47,6 +45,7 @@ export default function PrSentinelLab() {
         title: 'The life of one pull request.',
         dek: 'One PR, from GitHub’s webhook to a posted review — queued, planned, inspected by two waves of agents, and filtered before it speaks.',
       }}
+      mechanism={<ReviewSection />}
       decisions={PRS_DECISIONS}
       next="smartformflow"
       demo={<ReviewReplay />}

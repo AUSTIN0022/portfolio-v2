@@ -6,7 +6,7 @@ import { LINKS } from '@/content/lab'
 import { SITE_HOST } from '@/content/site'
 import { CommandPalette } from './CommandPalette'
 import { ThemeToggle } from './ThemeToggle'
-import { Wordmark } from './Wordmark'
+import { DotName } from './DotName'
 
 function Clock() {
   const [t, setT] = useState('')
@@ -87,8 +87,7 @@ export function LabBar() {
 export function LabFooter() {
   return (
     <footer className="lab-foot">
-      <Wordmark text="MAKASARE" />
-      <div className="lab-foot-row">
+      <DotName text="AUSTIN" />      <div className="lab-foot-row">
         <span>© 2026 Austin Makasare</span>
         <span>
           <Link href="/status">Status</Link> · <Link href="/colophon">Colophon &amp; changelog</Link> · try{' '}
